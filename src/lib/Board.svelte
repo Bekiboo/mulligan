@@ -22,6 +22,18 @@
 		moving = true;
 	}
 
+	async function onRightClick(e: MouseEvent) {
+		console.log('right click');
+		
+		// if (showMenu) {
+		// 	showMenu = false;
+		// 	await new Promise(res => setTimeout(res, 100));
+		// }
+		
+		// pos = { x: e.clientX, y: e.clientY };
+		// showMenu = true;
+	}
+
 	function onMouseMove(e: MouseEvent) {
 		let boxBoundary = box.getBoundingClientRect();
 		if (moving) {
@@ -54,6 +66,7 @@
 </script>
 
 <section
+	on:contextmenu|preventDefault={onRightClick}
 	bind:this={box}
 	on:mousedown={onMouseDown}
 	style="left: {left}px; top: {top}px;"

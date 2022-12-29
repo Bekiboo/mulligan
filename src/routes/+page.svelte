@@ -1,18 +1,22 @@
 <script lang="ts">
 	import Board from '$lib/Board.svelte';
-	import { tokenList } from '$lib/stores/elements';
-	import { addToken } from '$lib/stores/toolbar';
+	import TokenComp from '$lib/elements/TokenComp.svelte';
+	import { elementList } from '$lib/stores/elements';
+	import { tokenTool } from '$lib/stores/toolbar';
+	import { addToken } from './handleClick';
 
-	let tokens: any;
-	// : {x: number, y:number}[];
+	// const io = require('socket.io')();
 
-	tokenList.subscribe((value) => {
-		tokens = value;
-	});
+	// const socket = io()
 
-	let addTokenActive = false;
-	addToken.subscribe((value) => {
-		addTokenActive = value;
+	// socket.on('eventFromServer', (message: any) => {
+	// 	console.log(message)
+	// })
+
+	let elements: any[] = [];
+
+	elementList.subscribe((value) => {
+		elements = value;
 	});
 
 	let box: any;
@@ -21,14 +25,16 @@
 	let m = { x: 0, y: 0 };
 	let boardScale: number = 20;
 
-	function wheel(event: any) {
-		// if (event.deltaY > 0 && boardScale > 11) {
-		// 	boardScale -= 1;
-		// } else if (boardScale < 30) {
-		// 	boardScale += 1;
-		// }
-		// console.log(boardScale);
+	// function wheel to zoom in and out on the board
+	function wheel(event: WheelEvent) {
+		event.preventDefault();
+		const delta = Math.sign(event.deltaY);
+		boardScale = Math.max(10, Math.min(boardScale + delta, 100));
+
+		console.log(boardScale)
 	}
+
+	// function handleMousemove to track mouse movement
 
 	function handleMousemove(event: MouseEvent) {
 		let boxBoundary = box.getBoundingClientRect();
@@ -37,19 +43,7 @@
 	}
 
 	function handleBoardClick(event: any) {
-		if (addTokenActive) {
-			$tokenList = [
-				...$tokenList,
-				{
-					x: event.layerX,
-					y: event.layerY,
-					z: Math.round(Math.random() * 1000000)
-				}
-			];
-			console.log(tokens);
-
-			// addToken.set(false)
-		}
+		if ($tokenTool) $elementList = addToken(event, $elementList);		
 	}
 </script>
 
@@ -63,8 +57,10 @@
 			on:wheel={wheel}
 			on:click={handleBoardClick}
 		>
-			{#each tokens as token}
-				<div style="transform:translate({token.x - 20}px,{token.y - 20}px);z-index:{token.z};position:absolute" class="bg-red-500 rounded-full w-10 h-10"></div>
+			{#each elements as element}
+				{#if element.type == 'token'}
+					<TokenComp token={element} />
+				{/if}
 			{/each}
 
 			<!-- <div style="transform:translate({m.x}px,{m.y}px)">
