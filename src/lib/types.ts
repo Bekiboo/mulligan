@@ -28,3 +28,8 @@ export type Position = {
 	y: number;
 	z: number;
 };
+
+export type BoardStateMessage = {
+	type: 'boardState';
+	elements: Element[];
+};
