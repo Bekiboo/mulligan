@@ -1,7 +1,7 @@
 export type Element = Token | Card | Note;
 
 export type BaseElement = {
-	id: string;
+	game_slug: string;
 	pos: Position;
 	owner: string;
 };
@@ -33,3 +33,8 @@ export type BoardStateMessage = {
 	type: 'boardState';
 	elements: Element[];
 };
+
+export type User = {
+	id: string;
+	email: string;
+}

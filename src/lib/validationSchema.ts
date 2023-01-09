@@ -2,8 +2,10 @@ import { z } from 'zod'
 
 // ---------------------------- Validation Rules ----------------------------
 export const required = (name: string) => z.string().min(1, `${name} is required`)
+
 export const email = (name = 'Email') =>
   required(name).email(`${name} is not valid`)
+
 export const password = (number = 5, name = 'Password') =>
   required(name)
     .min(number, `${name} must be at least ${number} characters`)
@@ -73,4 +75,8 @@ export const RegisterUserSchema = z.object({
     .string({ required_error: 'Password confirmation is required' })
     .min(1, { message: 'Password confirmation is required' })
     .trim(),
+})
+
+export const CreateGameSchema = z.object({
+  name: required('Name'),
 })

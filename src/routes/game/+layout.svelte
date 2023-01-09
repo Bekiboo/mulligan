@@ -1,5 +1,8 @@
 <script lang="ts">
-	import RightPanel from '$lib/components/RightPanel.svelte';
+	import RightPanel from "./RightPanel.svelte"
+
+
+	RightPanel
 </script>
 
 

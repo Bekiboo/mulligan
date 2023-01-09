@@ -1,19 +1,17 @@
 <script lang="ts">
-	import '../app.css'
-	import { supabase } from '$lib/db/supabase'
 	import { navigating } from '$app/stores'
-	import { onMount } from 'svelte'
-	import { user } from '$lib/stores/auth'
-	import PreloadingIndicator from '$lib/components/overlay/PreloadingIndicator.svelte'
 	import LoadingScreen from '$lib/components/overlay/LoadingScreen.svelte'
+	import PreloadingIndicator from '$lib/components/overlay/PreloadingIndicator.svelte'
+	import { supabase } from '$lib/db/supabase'
+	import { user } from '$lib/stores/auth'
 	import { loadingState } from '$lib/stores/states'
-	import RightPanel from '$lib/components/RightPanel.svelte'
+	import { onMount } from 'svelte'
 	import { Toaster } from 'svelte-french-toast'
-	// import CircleMenu from '$lib/CircleMenu.svelte'
+	import '../app.css'
 
 	export let data: any
 
-	console.log(data.session)
+	// console.log(data.session)
 
 	$user = { id: data.user?.id, email: data.user?.email }
 
@@ -25,26 +23,12 @@
 			return
 		})
 	})
-	let slotWidth: number
-	onMount(() => {
-		slotWidth = window.innerWidth - 120
-	})
 </script>
 
 <Toaster />
 
-{#if $navigating}
-	<PreloadingIndicator />
-{/if}
+{#if $navigating}<PreloadingIndicator />{/if}
 
-{#if $loadingState}
-	<LoadingScreen />
-{/if}
+{#if $loadingState}<LoadingScreen />{/if}
 
-<RightPanel />
-<!-- <CircleMenu /> -->
-<div style="width: {slotWidth}px;" class="text-white">
-	<slot />
-</div>
-
-<svelte:window on:resize={() => (slotWidth = window.innerWidth - 120)} />
+<slot />

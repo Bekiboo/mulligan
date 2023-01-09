@@ -32,16 +32,9 @@
 	}
 </script>
 
-<a href="/" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
-	<img
-		class="h-24 mt-2 ml-2 -translate-y-1"
-		src="../img/icons/white_logo.png"
-		alt="Elevatus Logo"
-	/>
-</a>
-<div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
+<div class="w-full bg-[#3F589E] rounded-2xl shadow md:mt-0 sm:max-w-md xl:p-0">
 	<div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-		<h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+		<h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl">
 			Update Password
 		</h1>
 
@@ -51,7 +44,7 @@
 
 		<form method="POST" class="space-y-4 md:space-y-6" use:enhance={submitForm} novalidate>
 			<div>
-				<label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+				<label for="password" class="block mb-2 text-sm font-medium">Password</label>
 				<input
 					type="password"
 					name="password"
@@ -66,7 +59,7 @@
 				{/if}
 			</div>
 			<div>
-				<label for="confirmPassword" class="block mb-2 text-sm font-medium text-gray-900"
+				<label for="confirmPassword" class="block mb-2 text-sm font-medium"
 					>Confirm Password</label
 				>
 				<input
@@ -88,7 +81,7 @@
 
 			<button
 				type="submit"
-				class="text-white bg-orange-500 hover:bg-orange-400 border-2 border-white shadow-md active:shadow-none font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center duration-100"
+				class="text-white bg-emerald-600 hover:bg-emerald-500 shadow-md active:shadow-none font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center duration-100"
 				>Update Password</button
 			>
 		</form>

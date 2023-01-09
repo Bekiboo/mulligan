@@ -53,7 +53,7 @@ export const actions: Actions = {
 			})
 		}
 
-		throw redirect(303, '/portal')
+		throw redirect(303, '/profile')
 	},
 
 	signOut: async (event) => {

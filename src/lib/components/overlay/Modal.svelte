@@ -5,6 +5,7 @@
   const close = () => dispatch('close')
 
   let modal: any
+  export let backgroundColor: string = '#3F589E'
 
   const handle_keydown = (e: any) => {
     if (e.key === 'Escape') {
@@ -43,7 +44,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="modal-background" on:click={close} />
 
-<div class="modal rounded-2xl bg-emerald-600" role="dialog" aria-modal="true" bind:this={modal}>
+<div class="modal rounded-2xl bg-slate-200" style="background-color: {backgroundColor}" role="dialog" aria-modal="true" bind:this={modal}>
   <!-- svelte-ignore a11y-autofocus -->
   <slot name="header" />
   <!-- <hr /> -->

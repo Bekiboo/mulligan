@@ -119,7 +119,7 @@
       <div class="flex items-end justify-between" />
       <button
         type="submit"
-        class="text-white bg-emerald-500 hover:bg-emerald-400 shadow-md active:shadow-none font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center duration-100"
+        class="text-white bg-emerald-600 hover:bg-emerald-500 shadow-md active:shadow-none font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center duration-100"
         >Sign up</button
       >
       <p class="text-sm font-light text-gray-300">

@@ -15,7 +15,7 @@
 
 {#if visible}
 	<div class="progress-container">
-		<div class="progress bg-emerald-500" style="width: {p * 100}%" />
+		<div class="progress bg-emerald-600" style="width: {p * 100}%" />
 	</div>
 {/if}
 

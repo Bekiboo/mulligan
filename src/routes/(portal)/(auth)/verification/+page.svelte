@@ -28,9 +28,9 @@
   <div class="flex gap-5 justify-center">
     <a href="/signin" class="mt-12"
       ><div
-        class="bg-emerald-500 w-fit mx-auto rounded-xl border-2 drop-shadow-md
+        class="bg-emerald-600 w-fit mx-auto rounded-xl border-2 drop-shadow-md
     active:drop-shadow-none duration-100 py-2 px-4
-    hover:bg-emerald-400"
+    hover:bg-emerald-500"
       >
         Back to Sign In
       </div></a

@@ -25,7 +25,7 @@
       }
       errors = []
       toast.success('Welcome to the dashboard!', {
-        duration: 5000,
+        duration: 2000,
         style: 'margin-top: 4rem',
       })
       update()
@@ -100,7 +100,7 @@
       </div>
       <button
         type="submit"
-        class="text-white bg-emerald-500 hover:bg-emerald-400  border-white shadow-md active:shadow-none font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center duration-100"
+        class="text-white bg-emerald-600 hover:bg-emerald-500  border-white shadow-md active:shadow-none font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center duration-100"
         >Sign in</button
       >
       <p class="text-sm font-light text-gray-300">
