@@ -12,11 +12,9 @@ export async function createElement(
 	event: any,
 	type: string,
 	gameSlug: string,
+	owner: string
 ): Promise<void> {
-    let currentUser: User = {id: '', email: ''}
-	user.subscribe((value: User) => {
-		currentUser = value // prints the id of the current user
-	  });
+    
 	const pos: Position = {
 		x: event.layerX,
 		y: event.layerY,
@@ -44,14 +42,14 @@ export async function createElement(
 			break
 	}
 
-	if (currentUser.id === '') {
+	if (owner === '') {
 		console.log('No user logged in')
 		return
 	}
 	await elementRef.insert({
 		game_slug: gameSlug,
 		type,
-		owner: currentUser.id,
+		owner,
 		pos,
 		propty,
 		is_shared: false

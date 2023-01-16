@@ -8,7 +8,6 @@
 	import { readable, get } from 'svelte/store'
 
 	export let data: any
-	console.log(data.game)
 
 	const elements = readable(data.game, (set) => {
 		supabase
@@ -58,7 +57,7 @@
 		m.x = e.clientX - boxBoundary.x
 		m.y = e.clientY - boxBoundary.y
 
-		if ($tokenTool) createElement(e, 'token', data.slug)
+		if ($tokenTool) createElement(e, 'token', data.slug, data.session.user.id)
 	}
 </script>
 

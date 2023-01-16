@@ -1,5 +1,5 @@
 // function to get the middle of height and width of an element
-export function getMiddleOfElement(element: HTMLElement) {
+export function getCenter(element: HTMLElement) {
 	const { height, width } = element.getBoundingClientRect()
 	return {
 		middleX: width / 2,
