@@ -62,14 +62,14 @@ export const RegisterUserSchema = z.object({
   email: email(),
   password: z
     .string({ required_error: 'Password is required' })
-    .min(8, { message: 'Password must be at least 8 characters' })
-    .regex(new RegExp('.*[A-Z].*'), 'One uppercase character')
-    .regex(new RegExp('.*[a-z].*'), 'One lowercase character')
-    .regex(new RegExp('.*\\d.*'), 'One number')
-    .regex(
-      new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'),
-      'One special character'
-    )
+    .min(6, { message: 'Password must be at least 6 characters' })
+    // .regex(new RegExp('.*[A-Z].*'), 'One uppercase character')
+    // .regex(new RegExp('.*[a-z].*'), 'One lowercase character')
+    // .regex(new RegExp('.*\\d.*'), 'One number')
+    // .regex(
+    //   new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'),
+    //   'One special character'
+    // )
     .trim(),
   confirmPassword: z
     .string({ required_error: 'Password confirmation is required' })

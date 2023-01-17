@@ -4,7 +4,6 @@
 	import { getCenter } from '$lib/utils'
 	import { updateElementPos } from '$lib/db/elementService'
 	import { onMount } from 'svelte'
-	import { devicePixelRatio } from '$lib/stores/states'
 
 	export let element: Element
 	let HTMLelement: HTMLElement
@@ -17,19 +16,28 @@
 	})
 
 	let currentPos: { x: number; y: number; z: number }
+	let originalX: number
+	let originalY: number
 
 	const onTouchStart = (e: TouchEvent) => {
-		e.preventDefault()
-		console.log('touchstart');
-		
-	}
-
-	const onMouseDown = () => {
 		selectedElement.set(element.id)
 		let x = element.pos.x
 		let y = element.pos.y
 		let z = element.pos.z
 		currentPos = { x, y, z }
+		originalX = e.touches[0].clientX
+		originalY = e.touches[0].clientY
+		
+	}
+
+	const onMouseDown = (e: any) => {
+		selectedElement.set(element.id)
+		let x = element.pos.x
+		let y = element.pos.y
+		let z = element.pos.z
+		currentPos = { x, y, z }
+		originalX = e.clientX
+		originalY = e.clientY
 	}
 	const onMouseUp = () => {
 		selectedElement.set(null)
@@ -45,8 +53,15 @@
         // console.log(e);
         
 		if ($selectedElement == element.id) {
-			element.pos.x += e.movementX / $devicePixelRatio
-			element.pos.y += e.movementY / $devicePixelRatio
+			element.pos.x = currentPos.x + (e.clientX - originalX)
+			element.pos.y = currentPos.y + (e.clientY - originalY)
+		}
+	}
+
+	function onTouchMove(e: any) {
+		if ($selectedElement == element.id) {
+			element.pos.x = currentPos.x + (e.touches[0].clientX - originalX)
+			element.pos.y = currentPos.y + (e.touches[0].clientY - originalY)
 		}
 	}
 </script>
@@ -55,11 +70,11 @@
 	bind:this={HTMLelement}
 	on:mousedown={onMouseDown}
 	on:mouseup={onMouseUp}
-	on:touchstart={onMouseDown}
+	on:touchstart={onTouchStart}
 	on:touchend={onMouseUp}
 	style="transform:translate({element.pos.x - middleX}px,{element.pos.y - middleY}px);z-index:{element.pos
 		.z};"
 	class="bg-red-500 rounded-full w-10 h-10 absolute"
 />
 
-<svelte:window on:mousemove={onMouseMove} on:touchmove={onMouseMove} />
+<svelte:window on:mousemove={onMouseMove} on:touchmove={onTouchMove} />

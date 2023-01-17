@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { selectedElement } from '$lib/stores/elements'
-	import { devicePixelRatio } from '$lib/stores/states'
 	import { onMount } from 'svelte'
 
 	export let boardWidth: number
@@ -18,52 +17,67 @@
 	})
 
 	let moving = false
-	let box: any
+	let originalX: number
+	let originalY: number
+	let originalLeft: number
+	let originalTop: number
 
-	const onMouseDown = () => (moving = true)
+	const onMouseDown = (e: any) => {
+		moving = true
+		originalX = e.clientX
+		originalY = e.clientY
+		originalLeft = left
+		originalTop = top
+	}
+
+	const onTouchStart = (e: any) => {
+		moving = true
+		originalX = e.touches[0].clientX
+		originalY = e.touches[0].clientY
+		originalLeft = left
+		originalTop = top
+	}
+
 	const onMouseUp = () => (moving = false)
 
 	function onMouseMove(e: MouseEvent) {
-		let boxBoundary = box.getBoundingClientRect()
+		if ($selectedElement) return
 
-		if ($selectedElement) {
-			return
-		}
+		if (!moving) return
 
-		if (!moving) {
-			return
-		}
-		const { innerWidth, innerHeight } = window
-		const { x, y, right, bottom } = boxBoundary
+		left = originalLeft + (e.clientX - originalX)
+		top = originalTop + (e.clientY - originalY)
+	}
 
-		if (x < 0) {
-			right < innerWidth
-				? (left = innerWidth - boardWidth)
-				: (left += e.movementX / $devicePixelRatio)
-		} else {
-			left = -1
-		}
+	function onTouchMove(e:any) {
+		console.log(e);
 
-		if (y < 0) {
-			bottom < innerHeight
-				? (top = innerHeight - boardHeight)
-				: (top += e.movementY / $devicePixelRatio)
-		} else {
-			top = -1
-		}
+		if ($selectedElement) return
+
+		if (!moving) return
+
+		left = originalLeft + (e.touches[0].clientX - originalX)
+		top = originalTop + (e.touches[0].clientY - originalY)
+
+
 	}
 </script>
 
 <section
-	bind:this={box}
 	on:mousedown={onMouseDown}
+	on:touchstart={onTouchStart}
 	style="left: {left}px; top: {top}px;"
 	class="select-none cursor-move fixed bg-gradient-to-tl z-[-1] gradient"
 >
 	<slot />
 </section>
 
-<svelte:window on:mouseup={onMouseUp} on:mousemove={onMouseMove} />
+<svelte:window
+	on:mouseup={onMouseUp}
+	on:touchend={onMouseUp}
+	on:mousemove={onMouseMove}
+	on:touchmove={onTouchMove}
+/>
 
 <style>
 	.gradient {

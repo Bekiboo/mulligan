@@ -4,7 +4,6 @@
 	import { getCenter } from '$lib/utils'
 	import { updateElementPos } from '$lib/db/elementService'
 	import { onMount } from 'svelte'
-	import { devicePixelRatio } from '$lib/stores/states'
 
 	export let token: Token
 	let element: HTMLElement
@@ -41,12 +40,7 @@
 		updateElementPos(token)
 	}
 
-	function onMouseMove(e: MouseEvent) {
-		if ($selectedElement == token.id) {
-			token.pos.x += e.movementX / $devicePixelRatio
-			token.pos.y += e.movementY / $devicePixelRatio
-		}
-	}
+	
 </script>
 
 <div

@@ -117,6 +117,7 @@
         {/if}
       </div>
       <div class="flex items-end justify-between" />
+      <p class="text-sm text-gray-300">During the Alpha it is not required to have a secure password, but you are still advised to do so.</p>
       <button
         type="submit"
         class="text-white bg-emerald-600 hover:bg-emerald-500 shadow-md active:shadow-none font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center duration-100"

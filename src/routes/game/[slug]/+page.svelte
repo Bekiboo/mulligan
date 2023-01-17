@@ -6,7 +6,6 @@
 	import { createElement } from '$lib/db/elementService'
 	import { readable, get } from 'svelte/store'
 	import { selectedElement } from '$lib/stores/elements'
-	import { devicePixelRatio } from '$lib/stores/states'
 	import ElementComp from '$lib/components/elements/ElementComp.svelte'
 
 	export let data: any
@@ -63,7 +62,6 @@
 
 	}
 </script>
-<!-- <div class="text-white">{$devicePixelRatio}</div> -->
 <Board boardWidth={boardDims.width} boardHeight={boardDims.height}>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
