@@ -58,7 +58,7 @@
 	bind:this={box}
 	on:mousedown={onMouseDown}
 	style="left: {left}px; top: {top}px;"
-	class="select-none cursor-move absolute bg-gradient-to-tl z-[-1] gradient"
+	class="select-none cursor-move fixed bg-gradient-to-tl z-[-1] gradient"
 >
 	<slot />
 </section>
