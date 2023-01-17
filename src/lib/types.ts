@@ -4,6 +4,7 @@ export type BaseElement = {
 	game_slug: string;
 	pos: Position;
 	owner: string;
+	id: string;
 };
 
 export type Token = BaseElement & {

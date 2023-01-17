@@ -2,11 +2,23 @@ import { supabase } from '$lib/db/supabase'
 import { user } from '$lib/stores/auth'
 import type { Card, Element, Note, Position, Token, User } from '$lib/types'
 
-// export function addToken(event: any, elementList: Element[]) {
-
 const elementRef = supabase.from('element')
 
+export async function updateElementPos(element: Element): Promise<void> {
+	console.log('updateElement', element);
+	const { error } = await supabase
+		.from('element')
+		.update({ pos: element.pos })
+		.eq('id', element.id)
+	
+		if (error) {
+			console.log(error);
+			
+		}
 
+
+	// await elementRef.update({pos: element.pos}).eq( 'id', element.id )
+}
 
 export async function createElement(
 	event: any,
@@ -14,7 +26,6 @@ export async function createElement(
 	gameSlug: string,
 	owner: string
 ): Promise<void> {
-    
 	const pos: Position = {
 		x: event.layerX,
 		y: event.layerY,

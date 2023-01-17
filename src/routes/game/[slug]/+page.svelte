@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Board from '../Board.svelte'
+	import Board from './../Board.svelte'
 	import { supabase } from '$lib/db/supabase'
 	import TokenComp from '$lib/components/elements/TokenComp.svelte'
 	import { tokenTool } from '$lib/stores/toolbar'
-	import { createElement } from '../handleClick'
-	// import type { BoardStateMessage } from '$lib/types';
+	import { createElement } from '$lib/db/handleClick'
 	import { readable, get } from 'svelte/store'
+	import { selectedElement } from '$lib/stores/elements'
 
 	export let data: any
 
@@ -39,33 +39,34 @@
 				}
 			})
 			.subscribe()
-			// Unsubscribe from Supabase?
+		// Unsubscribe from Supabase?
 	})
 
 	const boardDims: { width: number; height: number } = { width: 30000, height: 20000 }
 
 	let m = { x: 0, y: 0 }
 
-	async function onRightClick(e: any) {
-		let boxBoundary = e.path[0].getBoundingClientRect()
-		m.x = e.clientX - boxBoundary.x
-		m.y = e.clientY - boxBoundary.y
-	}
-
 	function handleBoardClick(e: any) {
+		if ($selectedElement) {
+			return
+		}
 		let boxBoundary = e.path[0].getBoundingClientRect()
 		m.x = e.clientX - boxBoundary.x
 		m.y = e.clientY - boxBoundary.y
 
-		if ($tokenTool) createElement(e, 'token', data.slug, data.session.user.id)
+		if ($tokenTool) {
+			createElement(e, 'token', data.slug, data.session.user.id)
+			return
+		}
+
 	}
 </script>
-
+<div class="text-white">{$selectedElement}</div>
 <Board boardWidth={boardDims.width} boardHeight={boardDims.height}>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		style="width:{boardDims.width}px;height:{boardDims.height}px"
-		on:contextmenu|preventDefault={onRightClick}
+		on:contextmenu|preventDefault={handleBoardClick}
 		on:click={handleBoardClick}
 	>
 		{#each $elements as element}

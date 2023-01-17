@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { selectedElement } from '$lib/stores/elements'
 	import { onMount } from 'svelte'
 
 	export let boardWidth: number
@@ -23,6 +24,11 @@
 
 	function onMouseMove(e: MouseEvent) {
 		let boxBoundary = box.getBoundingClientRect()
+
+		if ($selectedElement) {
+						return
+		}
+		
 		if (!moving) {
 			return
 		}
