@@ -66,7 +66,7 @@
 <section
 	on:mousedown={onMouseDown}
 	on:touchstart={onTouchStart}
-	style="left: {left}px; top: {top}px;"
+	style="left: {left}px; top: {top}px; overscroll-behavior: contain;"
 	class="select-none cursor-move fixed bg-gradient-to-tl z-[-1] gradient"
 >
 	<slot />
