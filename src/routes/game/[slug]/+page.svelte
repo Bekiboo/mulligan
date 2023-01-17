@@ -3,9 +3,11 @@
 	import { supabase } from '$lib/db/supabase'
 	import TokenComp from '$lib/components/elements/TokenComp.svelte'
 	import { tokenTool } from '$lib/stores/toolbar'
-	import { createElement } from '$lib/db/handleClick'
+	import { createElement } from '$lib/db/elementService'
 	import { readable, get } from 'svelte/store'
 	import { selectedElement } from '$lib/stores/elements'
+	import { devicePixelRatio } from '$lib/stores/states'
+	import ElementComp from '$lib/components/elements/ElementComp.svelte'
 
 	export let data: any
 
@@ -61,7 +63,7 @@
 
 	}
 </script>
-<div class="text-white">{$selectedElement}</div>
+<!-- <div class="text-white">{$devicePixelRatio}</div> -->
 <Board boardWidth={boardDims.width} boardHeight={boardDims.height}>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
@@ -70,9 +72,7 @@
 		on:click={handleBoardClick}
 	>
 		{#each $elements as element}
-			{#if element.type == 'token'}
-				<TokenComp token={element} />
-			{/if}
+				<ElementComp element={element} />
 		{/each}
 	</div>
 </Board>

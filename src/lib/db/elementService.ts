@@ -2,22 +2,10 @@ import { supabase } from '$lib/db/supabase'
 import { user } from '$lib/stores/auth'
 import type { Card, Element, Note, Position, Token, User } from '$lib/types'
 
-const elementRef = supabase.from('element')
-
 export async function updateElementPos(element: Element): Promise<void> {
-	console.log('updateElement', element);
-	const { error } = await supabase
-		.from('element')
-		.update({ pos: element.pos })
-		.eq('id', element.id)
-	
-		if (error) {
-			console.log(error);
-			
-		}
+	const { error } = await supabase.from('element').update({ pos: element.pos }).eq('id', element.id)
 
-
-	// await elementRef.update({pos: element.pos}).eq( 'id', element.id )
+	if (error) console.log(error)
 }
 
 export async function createElement(
@@ -57,7 +45,7 @@ export async function createElement(
 		console.log('No user logged in')
 		return
 	}
-	await elementRef.insert({
+	const { error } = await supabase.from('element').insert({
 		game_slug: gameSlug,
 		type,
 		owner,
@@ -65,4 +53,6 @@ export async function createElement(
 		propty,
 		is_shared: false
 	})
+
+	if (error) console.log(error)
 }

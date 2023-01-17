@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { selectedElement } from '$lib/stores/elements'
+	import { devicePixelRatio } from '$lib/stores/states'
 	import { onMount } from 'svelte'
 
 	export let boardWidth: number
@@ -26,9 +27,9 @@
 		let boxBoundary = box.getBoundingClientRect()
 
 		if ($selectedElement) {
-						return
+			return
 		}
-		
+
 		if (!moving) {
 			return
 		}
@@ -36,13 +37,17 @@
 		const { x, y, right, bottom } = boxBoundary
 
 		if (x < 0) {
-			right < innerWidth ? (left = innerWidth - boardWidth) : (left += e.movementX)
+			right < innerWidth
+				? (left = innerWidth - boardWidth)
+				: (left += e.movementX / $devicePixelRatio)
 		} else {
 			left = -1
 		}
 
 		if (y < 0) {
-			bottom < innerHeight ? (top = innerHeight - boardHeight) : (top += e.movementY)
+			bottom < innerHeight
+				? (top = innerHeight - boardHeight)
+				: (top += e.movementY / $devicePixelRatio)
 		} else {
 			top = -1
 		}

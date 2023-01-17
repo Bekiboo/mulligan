@@ -2,7 +2,7 @@
 	import { tokenTool } from '$lib/stores/toolbar'
 </script>
 
-<div class="px-8 w-32 flex justify-between items-center right-0 bg-slate-700 h-screen absolute">
+<div class="px-8 w-32 flex justify-between items-center right-0 bg-slate-700 h-screen fixed">
 	<button on:click={() => tokenTool.set(!$tokenTool)} class:bg-blue-500={$tokenTool} class="rounded-full p-2 bg-slate-800">
 		<svg
 			class="text-white h-10"
