@@ -45,13 +45,12 @@
 
 <div
 	bind:this={element}
-	on:mousedown={onMouseDown}
-	on:mouseup={onMouseUp}
-	on:touchstart={onTouchStart}
-	on:touchend={onMouseUp}
+	on:mousedown|preventDefault={onMouseDown}
+	on:mouseup|preventDefault={onMouseUp}
+	on:touchstart|preventDefault={onTouchStart}
+	on:touchend|preventDefault={onMouseUp}
 	style="transform:translate({token.pos.x - middleX}px,{token.pos.y - middleY}px);z-index:{token.pos
 		.z};"
 	class="bg-red-500 rounded-full w-10 h-10 absolute"
 />
 
-<svelte:window on:mousemove={onMouseMove} />

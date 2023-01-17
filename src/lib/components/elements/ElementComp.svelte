@@ -68,10 +68,10 @@
 
 <div
 	bind:this={HTMLelement}
-	on:mousedown={onMouseDown}
-	on:mouseup={onMouseUp}
-	on:touchstart={onTouchStart}
-	on:touchend={onMouseUp}
+	on:mousedown|preventDefault={onMouseDown}
+	on:mouseup|preventDefault={onMouseUp}
+	on:touchstart|preventDefault={onTouchStart}
+	on:touchend|preventDefault={onMouseUp}
 	style="transform:translate({element.pos.x - middleX}px,{element.pos.y - middleY}px);z-index:{element.pos
 		.z};"
 	class="bg-red-500 rounded-full w-10 h-10 absolute"
