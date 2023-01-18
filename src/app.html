@@ -6,6 +6,8 @@
 		<meta name="viewport" content="width=device-width" />
 		%sveltekit.head%
 	</head>
+	<!-- overscroll behavior stops refresh on swiping on mobile -->
+	<!-- TODO: see if we can scope overscroll behavior to the body of /game -->
 	<body data-sveltekit-preload-data="hover" style="overscroll-behavior: contain;">
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>

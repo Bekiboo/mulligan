@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { selectedElement } from '$lib/stores/elements'
+	import { zoom } from '$lib/stores/states'
 	import { onMount } from 'svelte'
 
 	export let boardWidth: number
@@ -38,35 +39,45 @@
 		originalTop = top
 	}
 
-	const onMouseUp = () => (moving = false)
+	const onMouseUp = () => {
+		moving = false
+		selectedElement.set(null)
+	}
 
 	function onMouseMove(e: MouseEvent) {
 		if ($selectedElement) return
 
 		if (!moving) return
 
-		left = originalLeft + (e.clientX - originalX)
-		top = originalTop + (e.clientY - originalY)
+		left = originalLeft + (e.clientX - originalX) * (1 / $zoom)
+		top = originalTop + (e.clientY - originalY) * (1 / $zoom)
 	}
 
 	function onTouchMove(e:any) {
-		console.log(e);
-
 		if ($selectedElement) return
 
 		if (!moving) return
 
-		left = originalLeft + (e.touches[0].clientX - originalX)
-		top = originalTop + (e.touches[0].clientY - originalY)
-
-
+		left = originalLeft + (e.touches[0].clientX - originalX) * (1 / $zoom)
+		top = originalTop + (e.touches[0].clientY - originalY) * (1 / $zoom)
 	}
-</script>
 
+	function wheel(e: any) {
+		$zoom = $zoom || 1
+		$zoom += e.deltaY / -1000
+		$zoom = Math.round(Math.min(Math.max(0.1, $zoom), 4) *100 ) / 100
+		// adjust left postion to zoom where the mouse is
+		// left += e.clientX * $zoom 
+		// top += e.clientY * $zoom
+	}
+
+</script>
+<div class="text-white">{$zoom}</div>
 <section
 	on:mousedown={onMouseDown}
 	on:touchstart={onTouchStart}
-	style="left: {left}px; top: {top}px;"
+	on:wheel|preventDefault={wheel}
+	style="left: {left}px; top: {top}px; zoom: {$zoom}"
 	class="select-none cursor-move fixed bg-gradient-to-tl z-[-1] gradient"
 >
 	<slot />

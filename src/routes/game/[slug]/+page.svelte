@@ -7,6 +7,7 @@
 	import { readable, get } from 'svelte/store'
 	import { selectedElement } from '$lib/stores/elements'
 	import ElementComp from '$lib/components/elements/ElementComp.svelte'
+	import { zoom } from '$lib/stores/states'
 
 	export let data: any
 
@@ -45,23 +46,24 @@
 
 	const boardDims: { width: number; height: number } = { width: 30000, height: 20000 }
 
-	let m = { x: 0, y: 0 }
-
 	function handleBoardClick(e: any) {
 		if ($selectedElement) {
 			return
 		}
-		let boxBoundary = e.path[0].getBoundingClientRect()
-		m.x = e.clientX - boxBoundary.x
-		m.y = e.clientY - boxBoundary.y
 
 		if ($tokenTool) {
-			createElement(e, 'token', data.slug, data.session.user.id)
+			createElement(
+				'token',
+				data.slug,
+				data.session.user.id,
+				e.layerX * (1 / $zoom),
+				e.layerY * (1 / $zoom)
+			)
 			return
 		}
-
 	}
 </script>
+
 <Board boardWidth={boardDims.width} boardHeight={boardDims.height}>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
@@ -70,7 +72,7 @@
 		on:click={handleBoardClick}
 	>
 		{#each $elements as element}
-				<ElementComp element={element} />
+			<ElementComp {element} />
 		{/each}
 	</div>
 </Board>

@@ -9,14 +9,15 @@ export async function updateElementPos(element: Element): Promise<void> {
 }
 
 export async function createElement(
-	event: any,
 	type: string,
 	gameSlug: string,
-	owner: string
+	owner: string,
+	x: number,
+	y: number
 ): Promise<void> {
 	const pos: Position = {
-		x: event.layerX,
-		y: event.layerY,
+		x,
+		y,
 		z: Math.round(Math.random() * 1000000)
 	}
 	let propty: any
