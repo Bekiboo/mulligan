@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RightPanel from "./RightPanel.svelte"
+	import RightPanel from "./ui/RightPanel.svelte"
 </script>
 
 <slot />

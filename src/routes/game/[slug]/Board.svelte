@@ -2,6 +2,7 @@
 	import { selectedElement } from '$lib/stores/elements'
 	import { zoom } from '$lib/stores/states'
 	import { onMount } from 'svelte'
+	import ZoomIndicator from './ui/ZoomIndicator.svelte'
 
 	export let boardWidth: number
 	export let boardHeight: number
@@ -96,9 +97,7 @@
 
 </script>
 
-<div class="text-white fixed ml-2 pointer-events-none">
-	<p>Zoom: {$zoom * 100}%</p>
-</div>
+<ZoomIndicator />
 <section
 	on:mousedown={onMouseDown}
 	on:touchstart={onTouchStart}

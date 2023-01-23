@@ -69,7 +69,16 @@
 	on:touchend|preventDefault={onMouseUp}
 	style="transform:translate({element.pos.x - middleX}px,{element.pos.y -
 		middleY}px);z-index:{element.pos.z};"
-	class="bg-red-500 rounded-full w-10 h-10 absolute"
+	class="bg-red-500 rounded-full w-10 h-10 absolute ease-in-out"
+	class:moving={element.id != $selectedElement}
 />
 
 <svelte:window on:mousemove={onMouseMove} on:touchmove={onTouchMove} />
+
+<style>
+	.moving {
+		transition-property: all;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+		transition-duration: 100ms;
+	}
+</style>

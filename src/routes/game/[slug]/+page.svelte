@@ -1,15 +1,21 @@
 <script lang="ts">
-	import Board from './../Board.svelte'
+	import Board from './Board.svelte'
 	import { supabase } from '$lib/db/supabase'
-	import TokenComp from '$lib/components/elements/TokenComp.svelte'
 	import { tokenTool } from '$lib/stores/toolbar'
 	import { createElement } from '$lib/db/elementService'
 	import { readable, get } from 'svelte/store'
 	import { selectedElement } from '$lib/stores/elements'
 	import ElementComp from '$lib/components/elements/ElementComp.svelte'
 	import { zoom } from '$lib/stores/states'
+	import { onMount } from 'svelte'
 
 	export let data: any
+
+	onMount(() => {
+		// stops the page to reload when panning down on mobile
+		document.documentElement.style.setProperty('overscroll-behaviour', 'contain')
+		return () => document.documentElement.style.removeProperty('overscroll-behaviour')
+	})
 
 	const elements = readable(data.game, (set) => {
 		supabase
@@ -21,30 +27,34 @@
 		const subscription = supabase
 			.channel(data.slug)
 			// listen to postgres changes on the 'element' table where the id is the same as the game slug
-			.on('postgres_changes', { event: '*', schema: 'public', table: 'element', filter: `game_slug=eq.${data.slug}` }, (payload) => {
-				switch (payload.eventType) {
-					case 'INSERT':
-						set([...get(elements), payload.new])
-						break
-					case 'UPDATE':
-						set([
-							...get(elements).map((element: Element) =>
-								element.id === payload.new.id ? payload.new : element
-							)
-						])
-						break
-					case 'DELETE':
-						set([...get(elements).filter((element: Element) => element.id !== payload.old.id)])
-						break
-					default:
-						break
+			.on(
+				'postgres_changes',
+				{ event: '*', schema: 'public', table: 'element', filter: `game_slug=eq.${data.slug}` },
+				(payload) => {
+					switch (payload.eventType) {
+						case 'INSERT':
+							set([...get(elements), payload.new])
+							break
+						case 'UPDATE':
+							set([
+								...get(elements).map((element: Element) =>
+									element.id === payload.new.id ? payload.new : element
+								)
+							])
+							break
+						case 'DELETE':
+							set([...get(elements).filter((element: Element) => element.id !== payload.old.id)])
+							break
+						default:
+							break
+					}
 				}
-			})
+			)
 			.subscribe()
 		// TODO: Unsubscribe from Supabase?
 	})
 
-	const boardDims: { width: number; height: number } = { width: 3000, height: 2000 }
+	const boardDims: { width: number; height: number } = { width: 30000, height: 20000 }
 
 	function handleBoardClick(e: any) {
 		if ($selectedElement) {
@@ -76,3 +86,9 @@
 		{/each}
 	</div>
 </Board>
+
+<style>
+	body {
+		background-color: #1a1a1a;
+	}
+</style>

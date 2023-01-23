@@ -47,7 +47,7 @@
 
 <!-- logout button -->
 <button
-	class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded"
+	class="bg-red-500 hover:bg-red-600 mt-4 text-white font-bold py-2 px-4 rounded"
 	on:click={signOut}
 >
 	Logout

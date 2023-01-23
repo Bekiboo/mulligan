@@ -3,10 +3,10 @@
 </script>
 
 <!-- Placeholder to account for Navbar height -->
-<div class="h-[4.5rem] w-screen" />
+<div class="h-[4.5rem] w-full" />
 
-<div class="px-8 h-[4.5rem] flex justify-between items-center top-0 bg-slate-700 w-screen absolute">
-	<a href="/"><img class="h-10 my-4" src="/img/M-ulligan.svg" alt="Mulligan Logo" /></a>
+<div class="px-8 h-[4.5rem] flex justify-between items-center top-0 bg-slate-700 w-full absolute">
+	<a href="/"><img class="h-10" src="/img/M-ulligan.svg" alt="Mulligan Logo" /></a>
 	<div class="">
 		{#if session}
 			<a
