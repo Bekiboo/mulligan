@@ -18,9 +18,6 @@ export const actions = {
     const password = formData.password
     const confirmPassword = formData.confirmPassword
 
-    console.log(password);
-    console.log(confirmPassword);
-
     if (password != confirmPassword) {
       return fail(400, {
         error: true,

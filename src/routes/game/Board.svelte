@@ -9,12 +9,15 @@
 	let windowHeight: number
 	let left: number
 	let top: number
+	let board: HTMLElement
 
 	onMount(() => {
 		windowWidth = window.innerWidth
 		windowHeight = window.innerHeight
 		left = (boardWidth - windowWidth) / -2
 		top = (boardHeight - windowHeight) / -2
+		originalLeft = left
+		originalTop = top
 	})
 
 	let moving = false
@@ -22,6 +25,15 @@
 	let originalY: number
 	let originalLeft: number
 	let originalTop: number
+
+	let clientX: number
+	let clientY: number
+
+	let dx: number
+	let dy: number
+
+	let layerX: number
+	let layerY: number
 
 	const onMouseDown = (e: any) => {
 		moving = true
@@ -44,16 +56,22 @@
 		selectedElement.set(null)
 	}
 
-	function onMouseMove(e: MouseEvent) {
+	function onMouseMove(e: any) {
+		clientX = e.clientX
+		clientY = e.clientY
+
+		layerX = e.layerX
+		layerY = e.layerY
+
 		if ($selectedElement) return
 
 		if (!moving) return
 
-		left = originalLeft + (e.clientX - originalX) * (1 / $zoom)
-		top = originalTop + (e.clientY - originalY) * (1 / $zoom)
+		left = originalLeft + (e.clientX - originalX)
+		top = originalTop + (e.clientY - originalY)
 	}
 
-	function onTouchMove(e:any) {
+	function onTouchMove(e: any) {
 		if ($selectedElement) return
 
 		if (!moving) return
@@ -62,23 +80,32 @@
 		top = originalTop + (e.touches[0].clientY - originalY) * (1 / $zoom)
 	}
 
+	// TODO: fix zoom
 	function wheel(e: any) {
+		if ($selectedElement) return
+
+		// let layer = { x: layerX, y: layerY }
+
 		$zoom = $zoom || 1
 		$zoom += e.deltaY / -1000
-		$zoom = Math.round(Math.min(Math.max(0.1, $zoom), 4) *100 ) / 100
-		// adjust left postion to zoom where the mouse is
-		// left += e.clientX * $zoom 
-		// top += e.clientY * $zoom
+		$zoom = Math.round(Math.min(Math.max(0.2, $zoom), 2) * 100) / 100
+
+		// left = (layer.x / $zoom - (clientX)) * -1
+		// top = (layer.y / $zoom - (clientY)) * -1
 	}
 
 </script>
-<div class="text-white">{$zoom}</div>
+
+<div class="text-white fixed ml-2 pointer-events-none">
+	<p>Zoom: {$zoom * 100}%</p>
+</div>
 <section
 	on:mousedown={onMouseDown}
 	on:touchstart={onTouchStart}
 	on:wheel|preventDefault={wheel}
-	style="left: {left}px; top: {top}px; zoom: {$zoom}"
-	class="select-none cursor-move fixed bg-gradient-to-tl z-[-1] gradient"
+	bind:this={board}
+	style="left: {left}px; top: {top}px; transform: scale({$zoom});"
+	class="select-none cursor-move fixed z-[-1] gradient"
 >
 	<slot />
 </section>

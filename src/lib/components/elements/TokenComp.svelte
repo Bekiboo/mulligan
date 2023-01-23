@@ -20,7 +20,6 @@
 	const onTouchStart = (e: TouchEvent) => {
 		e.preventDefault()
 		console.log('touchstart');
-		
 	}
 
 	const onMouseDown = () => {

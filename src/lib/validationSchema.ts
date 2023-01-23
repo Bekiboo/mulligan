@@ -9,19 +9,19 @@ export const email = (name = 'Email') =>
 export const password = (number = 5, name = 'Password') =>
   required(name)
     .min(number, `${name} must be at least ${number} characters`)
-    .regex(new RegExp('.*[A-Z].*'), 'One uppercase character')
-    .regex(new RegExp('.*[a-z].*'), 'One lowercase character')
-    .regex(new RegExp('.*\\d.*'), 'One number')
-    .regex(
-      new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'),
-      'One special character'
-    )
+    // .regex(new RegExp('.*[A-Z].*'), 'One uppercase character')
+    // .regex(new RegExp('.*[a-z].*'), 'One lowercase character')
+    // .regex(new RegExp('.*\\d.*'), 'One number')
+    // .regex(
+    //   new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'),
+    //   'One special character'
+    // )
     .trim()
 // --------------------------------------------------------------------------
 
 export const AuthUserSchema = z.object({
   email: email(),
-  password: password(8),
+  password: password(6),
 })
 
 export const ForgotPasswordSchema = z.object({
@@ -60,17 +60,7 @@ export const UpdateEmailSchema = z
 
 export const RegisterUserSchema = z.object({
   email: email(),
-  password: z
-    .string({ required_error: 'Password is required' })
-    .min(6, { message: 'Password must be at least 6 characters' })
-    // .regex(new RegExp('.*[A-Z].*'), 'One uppercase character')
-    // .regex(new RegExp('.*[a-z].*'), 'One lowercase character')
-    // .regex(new RegExp('.*\\d.*'), 'One number')
-    // .regex(
-    //   new RegExp('.*[`~<>?,./!@#$%^&*()\\-_+="\'|{}\\[\\];:\\\\].*'),
-    //   'One special character'
-    // )
-    .trim(),
+  password: password(6),
   confirmPassword: z
     .string({ required_error: 'Password confirmation is required' })
     .min(1, { message: 'Password confirmation is required' })

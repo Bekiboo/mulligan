@@ -3,13 +3,7 @@
   import { enhance, applyAction } from '$app/forms'
   import { loadingState, registrating } from '$lib/stores/states'
 	import type { ActionResult } from '@sveltejs/kit'
-	import { goto } from '$app/navigation'
-
-  $: console.log('registrating status: ' +  $registrating.status);
-  $: console.log('registrating email: ' +  $registrating.email);
-  $: console.log('loading: ' + $loadingState);
   
-
   let email: string
   let errors: any
 
@@ -18,8 +12,6 @@
   const submitForm = () => {
     loadingState.set(true)
     return async ({ result, update }: { result: ActionResult; update: any }) => {
-      console.log(result)
-
       loadingState.set(false)
 
       if (result.type === 'failure') {

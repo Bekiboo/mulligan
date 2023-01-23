@@ -7,8 +7,7 @@ import type { PageLoad } from './$types';
 export const load = (async (event) => {
     
     const { session } = await getSupabase(event)
-    // console.log('session: ' + JSON.stringify(session?.user.id));
-    
+   
     const { data, error } = await supabase
         .from('game')
         .select('*')

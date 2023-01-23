@@ -20,8 +20,8 @@
 
 		const subscription = supabase
 			.channel(data.slug)
-			.on('postgres_changes', { event: '*', schema: 'public', table: 'element' }, (payload) => {
-				// set([...get(elements), payload.new])
+			// listen to postgres changes on the 'element' table where the id is the same as the game slug
+			.on('postgres_changes', { event: '*', schema: 'public', table: 'element', filter: `game_slug=eq.${data.slug}` }, (payload) => {
 				switch (payload.eventType) {
 					case 'INSERT':
 						set([...get(elements), payload.new])
@@ -41,10 +41,10 @@
 				}
 			})
 			.subscribe()
-		// Unsubscribe from Supabase?
+		// TODO: Unsubscribe from Supabase?
 	})
 
-	const boardDims: { width: number; height: number } = { width: 30000, height: 20000 }
+	const boardDims: { width: number; height: number } = { width: 3000, height: 2000 }
 
 	function handleBoardClick(e: any) {
 		if ($selectedElement) {
