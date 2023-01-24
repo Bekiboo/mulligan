@@ -54,7 +54,7 @@
 
 	const onMouseUp = () => {
 		moving = false
-		selectedElement.set(null)
+		selectedElement?.set(null)
 	}
 
 	function onMouseMove(e: any) {
@@ -81,19 +81,22 @@
 		top = originalTop + (e.touches[0].clientY - originalY) * (1 / $zoom)
 	}
 
+	let MAX_ZOOM = 2
+	let MIN_ZOOM = 0.5
 	// TODO: fix zoom
 	function wheel(e: any) {
 		if ($selectedElement) return
-
 		// let layer = { x: layerX, y: layerY }
 
 		$zoom = $zoom || 1
 		$zoom += e.deltaY / -1000
-		$zoom = Math.round(Math.min(Math.max(0.2, $zoom), 2) * 100) / 100
+		$zoom = Math.round(Math.min(Math.max(MIN_ZOOM, $zoom), MAX_ZOOM) * 100) / 100
 
 		// left = (layer.x / $zoom - (clientX)) * -1
 		// top = (layer.y / $zoom - (clientY)) * -1
 	}
+
+	// TODO: add Pinch to zoom
 
 </script>
 
@@ -104,7 +107,7 @@
 	on:wheel|preventDefault={wheel}
 	bind:this={board}
 	style="left: {left}px; top: {top}px; transform: scale({$zoom});"
-	class="select-none cursor-move fixed z-[-1] gradient"
+	class="select-none cursor-move fixed z-[-1] bg-slate-800"
 >
 	<slot />
 </section>
@@ -115,9 +118,3 @@
 	on:mousemove={onMouseMove}
 	on:touchmove={onTouchMove}
 />
-
-<style>
-	.gradient {
-		background-image: linear-gradient(45deg, black, slategray);
-	}
-</style>

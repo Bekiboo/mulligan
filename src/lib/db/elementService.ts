@@ -1,5 +1,6 @@
 import { supabase } from '$lib/db/supabase'
 import { user } from '$lib/stores/auth'
+import { elementList } from '$lib/stores/elements'
 import type { Card, Element, Note, Position, Token, User } from '$lib/types'
 
 export async function updateElementPos(element: Element): Promise<void> {
@@ -56,4 +57,15 @@ export async function createElement(
 	})
 
 	if (error) console.log(error)
+}
+
+export async function deleteElement(element: Element): Promise<void> {
+	const { error } = await supabase.from('element').delete().eq('id', element.id)
+
+	if (error) {
+		console.log(error)
+		// add back the element to the list
+		// TODO: this is not working yet
+		elementList?.update((elements: any) => [...elements, { element }])
+	}
 }

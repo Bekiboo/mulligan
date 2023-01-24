@@ -1,5 +1,5 @@
+// import type { Element } from '$lib/types';
 import { writable, type Writable } from 'svelte/store';
-// import type { Element } from '../types';
 
-// export const elementList: any = writable([]);
-export const selectedElement: any = writable(null);
+export const selectedElement: any = writable();
+export const elementList: any = writable([]);

@@ -4,16 +4,22 @@
 	import { getCenter } from '$lib/utils'
 	import { updateElementPos } from '$lib/db/elementService'
 	import { onMount } from 'svelte'
-	import { zoom } from '$lib/stores/states'
+	import { movingElement, zoom } from '$lib/stores/states'
 
 	export let element: Element
 	let HTMLelement: HTMLElement
 	let middleX: number
 	let middleY: number
+	let notNew: boolean = true
 
 	onMount(() => {
 		middleX = getCenter(HTMLelement).middleX
 		middleY = getCenter(HTMLelement).middleY
+		// stops the animation on newly created elements
+		// TODO: find a better way to do this
+		setTimeout(() => {
+			notNew = false
+		}, 2000)
 	})
 
 	let currentPos: { x: number; y: number; z: number }
@@ -21,7 +27,7 @@
 	let originalY: number
 
 	const onTouchStart = (e: TouchEvent) => {
-		selectedElement.set(element.id)
+		selectedElement?.set(element)
 		let x = element.pos.x
 		let y = element.pos.y
 		let z = element.pos.z
@@ -31,7 +37,7 @@
 	}
 
 	const onMouseDown = (e: any) => {
-		selectedElement.set(element.id)
+		selectedElement?.set(element)
 		let x = element.pos.x
 		let y = element.pos.y
 		let z = element.pos.z
@@ -47,14 +53,14 @@
 	}
 
 	function onMouseMove(e: any) {
-		if ($selectedElement == element.id) {
+		if ($selectedElement?.id == element?.id) {
 			element.pos.x = currentPos.x + (e.clientX - originalX) * (1 / $zoom)
 			element.pos.y = currentPos.y + (e.clientY - originalY) * (1 / $zoom)
 		}
 	}
 
 	function onTouchMove(e: any) {
-		if ($selectedElement == element.id) {
+		if ($selectedElement?.id == element.id) {
 			element.pos.x = currentPos.x + (e.touches[0].clientX - originalX) * (1 / $zoom)
 			element.pos.y = currentPos.y + (e.touches[0].clientY - originalY) * (1 / $zoom)
 		}
@@ -70,7 +76,7 @@
 	style="transform:translate({element.pos.x - middleX}px,{element.pos.y -
 		middleY}px);z-index:{element.pos.z};"
 	class="bg-red-500 rounded-full w-10 h-10 absolute ease-in-out"
-	class:moving={element.id != $selectedElement}
+	class:moving={element.id == $movingElement}
 />
 
 <svelte:window on:mousemove={onMouseMove} on:touchmove={onTouchMove} />

@@ -20,7 +20,7 @@
 
 <div class="text-white fixed ml-2 pointer-events-none transition-all duration-300">
 	{#if valueChanged}
-		<p in:fade={{ duration: 100 }} out:fade={{ duration: 300 }}>{Math.round($zoom * 100)}%</p>
+		<p out:fade={{ duration: 300 }}>{Math.round($zoom * 100)}%</p>
 	{/if}
 	<!-- <p>Zoom: {Math.round($zoom * 100)}%</p> -->
 </div>
