@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { selectedElement } from '$lib/stores/elements'
+	import { createElement } from '$lib/db/elementService'
+	import { draggedElement } from '$lib/stores/elements'
 	import { zoom } from '$lib/stores/states'
+	import { tokenTool } from '$lib/stores/toolbar'
 	import { onMount } from 'svelte'
 	import ZoomIndicator from './ui/ZoomIndicator.svelte'
 
 	export let boardWidth: number
 	export let boardHeight: number
+	export let data: any
 	let windowWidth: number
 	let windowHeight: number
 	let left: number
@@ -54,7 +57,7 @@
 
 	const onMouseUp = () => {
 		moving = false
-		selectedElement?.set(null)
+		draggedElement?.set(null)
 	}
 
 	function onMouseMove(e: any) {
@@ -64,7 +67,7 @@
 		layerX = e.layerX
 		layerY = e.layerY
 
-		if ($selectedElement) return
+		if ($draggedElement) return
 
 		if (!moving) return
 
@@ -73,21 +76,20 @@
 	}
 
 	function onTouchMove(e: any) {
-		if ($selectedElement) return
+		if ($draggedElement) return
 
 		if (!moving) return
 
-		left = originalLeft + (e.touches[0].clientX - originalX) * (1 / $zoom)
-		top = originalTop + (e.touches[0].clientY - originalY) * (1 / $zoom)
+		left = originalLeft + (e.touches[0].clientX - originalX)
+		top = originalTop + (e.touches[0].clientY - originalY)
 	}
 
 	let MAX_ZOOM = 2
 	let MIN_ZOOM = 0.5
 	// TODO: fix zoom
 	function wheel(e: any) {
-		if ($selectedElement) return
+		if ($draggedElement) return
 		// let layer = { x: layerX, y: layerY }
-
 		$zoom = $zoom || 1
 		$zoom += e.deltaY / -1000
 		$zoom = Math.round(Math.min(Math.max(MIN_ZOOM, $zoom), MAX_ZOOM) * 100) / 100
@@ -95,16 +97,33 @@
 		// left = (layer.x / $zoom - (clientX)) * -1
 		// top = (layer.y / $zoom - (clientY)) * -1
 	}
-
 	// TODO: add Pinch to zoom
 
+	function handleBoardClick(e: any) {
+		if ($draggedElement) return
+		
+		// TOFIX: offset shifts slightly when zooming
+		if ($tokenTool) {
+			createElement(
+				'token',
+				data.slug,
+				data.session.user.id,
+				e.offsetX,
+				e.offsetY,
+			)
+			return
+		}
+	}
 </script>
 
 <ZoomIndicator />
+
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <section
 	on:mousedown={onMouseDown}
 	on:touchstart={onTouchStart}
 	on:wheel|preventDefault={wheel}
+	on:click={handleBoardClick}
 	bind:this={board}
 	style="left: {left}px; top: {top}px; transform: scale({$zoom});"
 	class="select-none cursor-move fixed z-[-1] bg-slate-800"
@@ -118,3 +137,13 @@
 	on:mousemove={onMouseMove}
 	on:touchmove={onTouchMove}
 />
+
+
+<!-- // console.log('layer: ', e.layerX, e.layerY);
+// console.log('client: ', e.clientX, e.clientY);
+// console.log('page: ', e.pageX, e.pageY);
+// console.log('offset: ', e.offsetX, e.offsetY);
+// console.log('screen: ', e.screenX, e.screenY);
+// console.log('board: ', board.offsetLeft, board.offsetTop);
+// console.log('left: ', left, ' - ', 'top: ', top);
+// console.log('------------------'); -->

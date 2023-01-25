@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { deleteElement } from '$lib/db/elementService'
-	import { elementList, selectedElement } from '$lib/stores/elements'
+	import { elementList, draggedElement } from '$lib/stores/elements'
 	import { fade } from 'svelte/transition'
 
 	let elementToDelete: any = null
@@ -14,7 +14,7 @@
 	}
 
 	function mouseOver() {
-		elementToDelete = $selectedElement
+		elementToDelete = $draggedElement
 	}
 </script>
 
@@ -22,7 +22,7 @@
 <div class="fixed flex h-screen items-center right-20">
 	<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 	<div
-		class="glass right-12 md:w-16 w-12 p-2 z-50 text-gray-300 hover:text-gray-50 rounded-full hover:scale-125 duration-100"
+		class="glass right-12 md:w-16 w-12 p-2 z-50 bg-slate-900 text-gray-300 hover:text-gray-50 rounded-full hover:scale-125 duration-100"
 		in:fade={{ duration: 300, easing: (t) => t * t * t }}
 		out:fade={{ duration: 300, easing: (t) => t * t * t }}
 		on:mouseover={mouseOver}
@@ -47,7 +47,6 @@
 
 <style>
     .glass {
-		background: rgba(65, 65, 65, 0.69);
 		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 		backdrop-filter: blur(8.2px);
 		-webkit-backdrop-filter: blur(8.2px);
