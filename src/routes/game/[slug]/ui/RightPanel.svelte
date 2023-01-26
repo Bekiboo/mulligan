@@ -2,9 +2,9 @@
 	import { tokenTool } from '$lib/stores/toolbar'
 </script>
 
-<div class="fixed flex h-screen items-center right-2">
+<div class="fixed flex h-screen items-center right-2 pointer-events-none">
 	<div
-		class="glass w-16 flex flex-col justify-between items-center bg-slate-700 rounded-2xl shadow-lg"
+		class="glass w-16 flex flex-col justify-between items-center bg-slate-700 rounded-2xl shadow-lg pointer-events-auto"
 	>
 		<button
 			on:click={() => tokenTool.set(!$tokenTool)}

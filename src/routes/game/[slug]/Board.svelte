@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createElement } from '$lib/db/elementService'
-	import { draggedElement, selectedElements } from '$lib/stores/elements'
+	import { draggedElements, selectedElements } from '$lib/stores/elements'
 	import { zoom } from '$lib/stores/states'
 	import { tokenTool } from '$lib/stores/toolbar'
 	import { onMount } from 'svelte'
@@ -39,7 +39,7 @@
 	let layerX: number
 	let layerY: number
 
-	const onMouseDown = (e: any) => {
+	const onMouseDown = (e: any) => {		
 		moving = true
 		originalX = e.clientX
 		originalY = e.clientY
@@ -55,9 +55,9 @@
 		originalTop = top
 	}
 
-	const onMouseUp = () => {
+	const onMouseUp = (e: any) => {
 		moving = false
-		draggedElement?.set(null)
+		$draggedElements =[]
 	}
 
 	function onMouseMove(e: any) {
@@ -67,7 +67,7 @@
 		layerX = e.layerX
 		layerY = e.layerY
 
-		if ($draggedElement) return
+		if ($draggedElements.length > 0) return
 
 		if (!moving) return
 
@@ -76,7 +76,7 @@
 	}
 
 	function onTouchMove(e: any) {
-		if ($draggedElement) return
+		if ($draggedElements.length > 0) return
 
 		if (!moving) return
 
@@ -88,7 +88,7 @@
 	let MIN_ZOOM = 0.5
 	// TODO: fix to zoom on pointer
 	function wheel(e: any) {
-		if ($draggedElement) return
+		if ($draggedElements.length > 0) return
 		// let layer = { x: layerX, y: layerY }
 		$zoom = $zoom || 1
 		$zoom += e.deltaY / -1000
@@ -100,7 +100,7 @@
 	// TODO: add Pinch to zoom
 
 	function handleBoardClick(e: any) {
-		if ($draggedElement) return
+		if ($draggedElements.length > 0) return
 
 		// unselect all elements if clicked on board
 		if (e.target.ariaLabel != 'element' && !e.ctrlKey) {

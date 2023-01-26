@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { deleteElement } from '$lib/db/elementService'
-	import { elementList, draggedElement } from '$lib/stores/elements'
+	import { elementList, draggedElements } from '$lib/stores/elements'
 	import { fade } from 'svelte/transition'
 
 	let elementToDelete: any = null
@@ -14,15 +14,15 @@
 	}
 
 	function mouseOver() {
-		elementToDelete = $draggedElement
+		elementToDelete = $draggedElements[0]
 	}
 </script>
 
 <!-- create element to delete selected element on hover -->
-<div class="fixed flex h-screen items-center right-20">
+<div class="fixed flex h-screen items-center right-20 pointer-events-none">
 	<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 	<div
-		class="glass right-12 md:w-16 w-12 p-2 z-50 bg-slate-900 text-gray-300 hover:text-gray-50 rounded-full hover:scale-125 duration-100"
+		class="glass right-12 md:w-16 w-12 p-2 z-50 bg-slate-900 text-gray-300 hover:text-gray-50 rounded-full hover:scale-125 duration-100 pointer-events-auto"
 		in:fade={{ duration: 300, easing: (t) => t * t * t }}
 		out:fade={{ duration: 300, easing: (t) => t * t * t }}
 		on:mouseover={mouseOver}

@@ -2,7 +2,7 @@
 	import Board from './Board.svelte'
 	import { supabase } from '$lib/db/supabase'
 	import { readable, get } from 'svelte/store'
-	import { elementList, draggedElement } from '$lib/stores/elements'
+	import { elementList, draggedElements } from '$lib/stores/elements'
 	import ElementComp from '$lib/components/elements/ElementComp.svelte'
 	import { movingElement, zoom } from '$lib/stores/states'
 	import { onMount } from 'svelte'

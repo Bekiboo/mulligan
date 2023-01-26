@@ -26,3 +26,7 @@ export function genRandomString(length: number) {
    }
    return result;
 }
+
+export function idInArray(value: any, array: Array<any>) {
+    return array?.some((el: any) => el.id == value.id)
+}

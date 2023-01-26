@@ -1,4 +1,5 @@
 <script>
+	import { draggedElements, selectedElements } from '$lib/stores/elements'
 	import { zoom } from '$lib/stores/states'
 	import { fade } from 'svelte/transition'
 
@@ -22,5 +23,7 @@
 	{#if valueChanged}
 		<p out:fade={{ duration: 300 }}>{Math.round($zoom * 100)}%</p>
 	{/if}
+	<p>Dragged: {$draggedElements.length}</p>
+	<p>Selected: {$selectedElements.length}</p>
 	<!-- <p>Zoom: {Math.round($zoom * 100)}%</p> -->
 </div>
