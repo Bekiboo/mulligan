@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createElement } from '$lib/db/elementService'
-	import { draggedElement } from '$lib/stores/elements'
+	import { draggedElement, selectedElements } from '$lib/stores/elements'
 	import { zoom } from '$lib/stores/states'
 	import { tokenTool } from '$lib/stores/toolbar'
 	import { onMount } from 'svelte'
@@ -86,7 +86,7 @@
 
 	let MAX_ZOOM = 2
 	let MIN_ZOOM = 0.5
-	// TODO: fix zoom
+	// TODO: fix to zoom on pointer
 	function wheel(e: any) {
 		if ($draggedElement) return
 		// let layer = { x: layerX, y: layerY }
@@ -101,7 +101,12 @@
 
 	function handleBoardClick(e: any) {
 		if ($draggedElement) return
-		
+
+		// unselect all elements if clicked on board
+		if (e.target.ariaLabel != 'element' && !e.ctrlKey) {
+			$selectedElements = []
+		}
+
 		// TOFIX: offset shifts slightly when zooming
 		if ($tokenTool) {
 			createElement(

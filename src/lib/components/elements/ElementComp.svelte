@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { draggedElement } from '$lib/stores/elements'
+	import { draggedElement, selectedElements } from '$lib/stores/elements'
 	import type { Element } from '$lib/types'
 	import { getCenter } from '$lib/utils'
 	import { updateElementPos } from '$lib/db/elementService'
 	import { onMount } from 'svelte'
 	import { movingElement, zoom } from '$lib/stores/states'
+	import TokenComp from './TokenComp.svelte'
 
 	export let element: Element
 	let HTMLelement: HTMLElement
@@ -39,15 +40,36 @@
 		originalX = e.clientX
 		originalY = e.clientY
 	}
-	const onMouseUp = () => {
-		if (currentPos.x == element.pos.x && currentPos.y == element.pos.y) {
+
+	const onMouseUp = (e: any) => {
+		// check if element is being dragged
+		if (currentPos.x != element.pos.x && currentPos.y != element.pos.y) {
+			updateElementPos(element)
 			return
 		}
-		updateElementPos(element)
+
+		if (!e.ctrlKey) {
+			$selectedElements = [element]
+		}
+
+		if (e.ctrlKey) {
+			if ($selectedElements.some((el: Element) => el.id == element.id)) {
+				selectedElements?.update((elements: Element[]) => {
+					elements = elements.filter((el: Element) => el.id != element.id)
+					return elements
+				})
+			} else {
+				// add element to selectedElements
+				selectedElements?.update((elements: Element[]) => {
+					elements = [...elements, element]
+					return elements
+				})
+			}
+		}
 	}
 
 	function onMouseMove(e: any) {
-		if ($draggedElement?.id == element?.id) {
+		if ($draggedElement?.id == element?.id && !e.ctrlKey) {
 			element.pos.x = currentPos.x + (e.clientX - originalX) * (1 / $zoom)
 			element.pos.y = currentPos.y + (e.clientY - originalY) * (1 / $zoom)
 		}
@@ -69,9 +91,13 @@
 	on:touchend|preventDefault={onMouseUp}
 	style="transform:translate({element.pos.x - middleX}px,{element.pos.y -
 		middleY}px);z-index:{element.pos.z};"
-	class="bg-red-500 rounded-full w-10 h-10 absolute ease-in-out"
+	class="absolute ease-in-out"
 	class:moving={element.id == $movingElement}
-/>
+>
+	{#if element.type == 'token'}
+		<TokenComp {element} />
+	{/if}
+</div>
 
 <svelte:window on:mousemove={onMouseMove} on:touchmove={onTouchMove} />
 

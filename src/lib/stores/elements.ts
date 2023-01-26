@@ -3,3 +3,4 @@ import { writable, type Writable } from 'svelte/store';
 
 export const draggedElement: any = writable();
 export const elementList: any = writable([]);
+export const selectedElements: any = writable([]);
