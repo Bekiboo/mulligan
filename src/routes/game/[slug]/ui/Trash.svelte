@@ -1,21 +1,30 @@
 <script lang="ts">
 	import { deleteElement } from '$lib/db/elementService'
-	import { elementList, draggedElements } from '$lib/stores/elements'
+	import { elementList, selectedElements } from '$lib/stores/elements'
+	import { hoveringTrash } from '$lib/stores/states'
 	import { fade } from 'svelte/transition'
+	import { onDestroy } from 'svelte'
 
-	let elementToDelete: any = null
+	let elementsToDelete: any = null
 
 	function mouseUp() {
 		// first delete element in client, then in db
 		elementList?.update((elements: any) =>
-			elements.filter((element: Element) => element.id !== elementToDelete.id)
+			elements.filter((element: Element) => element.id !== elementsToDelete.id)
 		)
-		deleteElement(elementToDelete)
+		deleteElement(elementsToDelete)
 	}
 
 	function mouseOver() {
-		elementToDelete = $draggedElements[0]
+		// map selectedElements ids to elementsToDelete
+		elementsToDelete = $selectedElements?.map((element: Element) => element.id)
+		console.log(elementsToDelete);
+		$hoveringTrash = true		
 	}
+
+	onDestroy(() => {
+		$hoveringTrash = false
+	})
 </script>
 
 <!-- create element to delete selected element on hover -->
@@ -27,6 +36,7 @@
 		out:fade={{ duration: 300, easing: (t) => t * t * t }}
 		on:mouseover={mouseOver}
 		on:mouseup={mouseUp}
+		on:mouseleave={() => ($hoveringTrash = false)}	
 	>
 		<svg
 			fill="none"

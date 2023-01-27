@@ -8,10 +8,11 @@
 	$: selected = $selectedElements.some((el: Element) => el.id == element.id)
 </script>
 
-<div class="bg-red-500 rounded-full w-10 h-10" aria-label="element" class:selected />
+<div class="bg-red-700 rounded-full w-10 h-10 text-white text-center pt-2 font-bold" aria-label="element" class:selected>
+</div>
 
 <style>
 	.selected {
-		border: 2px solid white;
+		outline: 2px solid white;
 	}
 </style>

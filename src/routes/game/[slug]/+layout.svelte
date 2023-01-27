@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { draggedElements } from '$lib/stores/elements'
+	import { dragging } from '$lib/stores/states'
 	import RightPanel from './ui/RightPanel.svelte'
 	import Trash from './ui/Trash.svelte'
 </script>
 
 <slot />
 
-{#if $draggedElements.length > 0}
+{#if $dragging}
 	<Trash />
 {/if}
 

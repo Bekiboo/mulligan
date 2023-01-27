@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { draggedElements, selectedElements } from '$lib/stores/elements'
+	import { selectedElements } from '$lib/stores/elements'
 	import type { Element } from '$lib/types'
 	import { getCenter, idInArray } from '$lib/utils'
 	import { updateElementPos } from '$lib/db/elementService'
 	import { onMount } from 'svelte'
-	import { movingElement, zoom } from '$lib/stores/states'
+	import { clickStartPos, dragging, hoveringTrash, movingElement, zoom } from '$lib/stores/states'
 	import TokenComp from './TokenComp.svelte'
 
 	export let element: Element
@@ -17,45 +17,37 @@
 		middleY = getCenter(HTMLelement).middleY
 	})
 
-	let currentPos: { x: number; y: number; z: number }
-	let originalX: number
-	let originalY: number
+	let originTokenPos: { x: number; y: number }
 
 	const onTouchStart = (e: TouchEvent) => {
-		$draggedElements = element
-		currentPos = { x: element.pos.x, y: element.pos.y, z: element.pos.z }
-		originalX = e.touches[0].clientX
-		originalY = e.touches[0].clientY
+		// $dragging = element
+		// originTokenPos = { x: element.pos.x, y: element.pos.y}
+		// originClientX = e.touches[0].clientX
+		// originClientY = e.touches[0].clientY
 	}
 
 	const onMouseDown = (e: any) => {
-		if (!idInArray(element, $selectedElements)) {
-			$draggedElements = [...$selectedElements, element]
-		} else if ($selectedElements.length < 1) {
-			$draggedElements = [element]
-		} else {
-			$draggedElements = $selectedElements
-		}
+		$clickStartPos = { x: e.clientX, y: e.clientY }
 
-		currentPos = { x: element.pos.x, y: element.pos.y, z: element.pos.z }
-		originalX = e.clientX
-		originalY = e.clientY
+		if ($selectedElements.length > 0 && idInArray(element, $selectedElements)) {
+			// works when empty. There must be a way to optimize this.
+		} else if (!e.ctrlKey) $selectedElements = [element]
+
+		$dragging = true
+	}
+
+	const onGlobalMouseDown = (e: any) => {
+		// required for multiple moving
+		if (idInArray(element, $selectedElements)) {
+			originTokenPos = { x: element.pos.x, y: element.pos.y }
+		}
 	}
 
 	const onMouseUp = (e: any) => {
-		// check if element is being dragged
-		if (currentPos?.x != element?.pos?.x && currentPos?.y != element?.pos?.y) {
-			updateElementPos(element)
-			return
-		}
-
-		// simple selection
-		if (!e.ctrlKey) $selectedElements = [element]
-
 		// multiple selection with ctrl key
 		if (e.ctrlKey) {
 			if (idInArray(element, $selectedElements)) {
-				$selectedElements = $selectedElements.filter((el: Element) => el.id != element.id)
+				$selectedElements = $selectedElements.filter((el: any) => el.id != element.id)
 			} else {
 				if ($selectedElements.length >= 10) return
 				$selectedElements = [...$selectedElements, element]
@@ -63,20 +55,33 @@
 		}
 	}
 
+	const onGlobalMouseUp = (e: any) => {
+		console.log($hoveringTrash);
+		
+		// if element is selected, has moved, not ctrl key, not hovering Trash
+		if (
+			idInArray(element, $selectedElements) &&
+			(originTokenPos?.x != element?.pos?.x || originTokenPos?.y != element?.pos?.y) &&
+			!e.ctrlKey &&
+			!$hoveringTrash
+		) {
+			updateElementPos(element)
+		}
+	}
+
 	function onMouseMove(e: any) {
-		if (idInArray(element, $draggedElements) && !e.ctrlKey) {
-			// let mouseOffsetX = e.clientX - originalX
-			// let mouseOffsetY = e.clientY - originalY
-			element.pos.x = currentPos.x + (e.clientX - originalX) * (1 / $zoom)
-			element.pos.y = currentPos.y + (e.clientY - originalY) * (1 / $zoom)
+		if (!$dragging) return
+		if (idInArray(element, $selectedElements) && !e.ctrlKey) {
+			element.pos.x = Math.round(originTokenPos.x + (e.clientX - $clickStartPos.x) * (1 / $zoom))
+			element.pos.y = Math.round(originTokenPos.y + (e.clientY - $clickStartPos.y) * (1 / $zoom))
 		}
 	}
 
 	function onTouchMove(e: any) {
-		if ($draggedElements?.id == element.id) {
-			element.pos.x = currentPos.x + (e.touches[0].clientX - originalX) * (1 / $zoom)
-			element.pos.y = currentPos.y + (e.touches[0].clientY - originalY) * (1 / $zoom)
-		}
+		// if ($dragging?.id == element.id) {
+		// 	element.pos.x = originTokenPos.x + (e.touches[0].clientX - originClientX) * (1 / $zoom)
+		// 	element.pos.y = originTokenPos.y + (e.touches[0].clientY - originClientY) * (1 / $zoom)
+		// }
 	}
 </script>
 
@@ -96,7 +101,12 @@
 	{/if}
 </div>
 
-<svelte:window on:mousemove={onMouseMove} on:touchmove={onTouchMove} />
+<svelte:window
+	on:mousemove={onMouseMove}
+	on:touchmove={onTouchMove}
+	on:mousedown={onGlobalMouseDown}
+	on:mouseup={onGlobalMouseUp}
+/>
 
 <style>
 	.moving {

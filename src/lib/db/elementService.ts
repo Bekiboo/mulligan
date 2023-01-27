@@ -4,6 +4,10 @@ import { elementList } from '$lib/stores/elements'
 import type { Card, Element, Note, Position, Token, User } from '$lib/types'
 
 export async function updateElementPos(element: Element): Promise<void> {
+	// TODO: check if the element is owned by the user
+	// TODO: see if we can update multiple elements at once
+	console.log('updating: ' + element.id);
+	
 	const { error } = await supabase.from('element').update({ pos: element.pos }).eq('id', element.id)
 
 	if (error) console.log(error)
@@ -59,13 +63,13 @@ export async function createElement(
 	if (error) console.log(error)
 }
 
-export async function deleteElement(element: Element): Promise<void> {
-	const { error } = await supabase.from('element').delete().eq('id', element.id)
+export async function deleteElement(elements: any): Promise<void> {
+	const { error } = await supabase.from('element').delete().in('id', [elements])
 
 	if (error) {
 		console.log(error)
-		// add back the element to the list
-		// TODO: this is not working yet
-		elementList?.update((elements: any) => [...elements, { element }])
+		// add back the element to the list if there was an error
+		// TOFIX: this is not working yet
+		// elementList?.update((elements: any) => [...elements, { elements }])
 	}
 }
