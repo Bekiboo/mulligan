@@ -9,6 +9,7 @@
 </script>
 
 <div class="bg-red-700 rounded-full w-10 h-10 text-white text-center pt-2 font-bold" aria-label="element" class:selected>
+	{element.id}
 </div>
 
 <style>

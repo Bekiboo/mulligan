@@ -56,14 +56,12 @@
 	}
 
 	const onGlobalMouseUp = (e: any) => {
-		console.log($hoveringTrash);
-		
-		// if element is selected, has moved, not ctrl key, not hovering Trash
+		if (e.ctrlKey) return
+		if ($hoveringTrash) return
+		// if element is selected and has moved
 		if (
 			idInArray(element, $selectedElements) &&
-			(originTokenPos?.x != element?.pos?.x || originTokenPos?.y != element?.pos?.y) &&
-			!e.ctrlKey &&
-			!$hoveringTrash
+			(originTokenPos?.x != element?.pos?.x || originTokenPos?.y != element?.pos?.y)
 		) {
 			updateElementPos(element)
 		}

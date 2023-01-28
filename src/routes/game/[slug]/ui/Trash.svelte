@@ -15,11 +15,10 @@
 		deleteElement(elementsToDelete)
 	}
 
-	function mouseOver() {
+	function mouseEnter() {
+		$hoveringTrash = true		
 		// map selectedElements ids to elementsToDelete
 		elementsToDelete = $selectedElements?.map((element: Element) => element.id)
-		console.log(elementsToDelete);
-		$hoveringTrash = true		
 	}
 
 	onDestroy(() => {
@@ -34,7 +33,7 @@
 		class="glass right-12 md:w-16 w-12 p-2 z-50 bg-slate-900 text-gray-300 hover:text-gray-50 rounded-full hover:scale-125 duration-100 pointer-events-auto"
 		in:fade={{ duration: 300, easing: (t) => t * t * t }}
 		out:fade={{ duration: 300, easing: (t) => t * t * t }}
-		on:mouseover={mouseOver}
+		on:mouseenter={mouseEnter}
 		on:mouseup={mouseUp}
 		on:mouseleave={() => ($hoveringTrash = false)}	
 	>

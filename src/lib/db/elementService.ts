@@ -5,9 +5,7 @@ import type { Card, Element, Note, Position, Token, User } from '$lib/types'
 
 export async function updateElementPos(element: Element): Promise<void> {
 	// TODO: check if the element is owned by the user
-	// TODO: see if we can update multiple elements at once
-	console.log('updating: ' + element.id);
-	
+	// can update all elements at once with UPSERT, but might lead into bugs
 	const { error } = await supabase.from('element').update({ pos: element.pos }).eq('id', element.id)
 
 	if (error) console.log(error)
@@ -57,7 +55,7 @@ export async function createElement(
 		owner,
 		pos,
 		propty,
-		is_shared: false
+		shared: false
 	})
 
 	if (error) console.log(error)

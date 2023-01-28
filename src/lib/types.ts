@@ -5,6 +5,10 @@ export type BaseElement = {
 	pos: Position;
 	owner: string;
 	id: string;
+	shared: boolean;
+	pinned: boolean;
+	visible: boolean;
+	on_background: boolean;
 };
 
 export type Token = BaseElement & {
