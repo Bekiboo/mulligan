@@ -3,12 +3,16 @@
 	import type { Element } from '$lib/types'
 
 	export let element: Element
+	export let selected: boolean
 
 	// check if element is selected
-	$: selected = $selectedElements.some((el: Element) => el.id == element.id)
 </script>
 
-<div class="bg-red-700 rounded-full w-10 h-10 text-white text-center pt-2 font-bold" aria-label="element" class:selected>
+<div
+	class="bg-red-700 rounded-full w-10 h-10 text-white text-center pt-2 font-bold"
+	aria-label="element"
+	class:selected
+>
 	{element.id}
 </div>
 
