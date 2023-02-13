@@ -26,7 +26,7 @@
 				return await applyAction(result)
 			}
 			errors = []
-			toast.success('Check your email', {
+			toast.success('Game successfully created', {
 				duration: 5000,
 				style: 'margin-top: 4rem'
 			})

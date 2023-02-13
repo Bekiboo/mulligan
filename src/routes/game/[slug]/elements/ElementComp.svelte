@@ -11,7 +11,7 @@
 	let HTMLelement: HTMLElement
 	let middleX: number
 	let middleY: number
-	
+
 	$: selected = $selectedElements?.some((el: Element) => el.id == element.id)
 
 	onMount(() => {
@@ -46,10 +46,9 @@
 	}
 
 	const onMouseUp = (e: any) => {
-		console.log(element);
-		console.log($selectedElements);
-		
-		
+		console.log(element)
+		console.log($selectedElements)
+
 		// multiple selection with ctrl key
 		if (e.ctrlKey) {
 			if (selected) {
@@ -104,7 +103,6 @@
 	}
 </script>
 
-
 <div
 	bind:this={HTMLelement}
 	on:mousedown|preventDefault={onMouseDown}
@@ -117,7 +115,7 @@
 	class:moving={element.id == $movingElement}
 >
 	{#if element.type == 'token'}
-		<TokenComp {element} {selected}/>
+		<TokenComp {element} {selected} />
 	{/if}
 </div>
 
