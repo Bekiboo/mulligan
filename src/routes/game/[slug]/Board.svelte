@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { createElement } from '$lib/db/elementService'
-	import { selectedElements } from '$lib/stores/elements'
+	import { createBrdElem } from '$lib/db/brdElemService'
+	import { selectedBrdElems } from '$lib/stores/brdElem'
 	import { dragging, zoom } from '$lib/stores/states'
 	import { tokenTool } from '$lib/stores/toolbar'
 	import { onMount } from 'svelte'
@@ -39,7 +39,7 @@
 	let layerX: number
 	let layerY: number
 
-	const onMouseDown = (e: any) => {	
+	const onMouseDown = (e: any) => {
 		moving = true
 		originalX = e.clientX
 		originalY = e.clientY
@@ -102,20 +102,14 @@
 	function handleBoardClick(e: any) {
 		if ($dragging) return
 
-		// unselect all elements if clicked on board
+		// unselect all brdElems if clicked on board
 		if (e.target.ariaLabel != 'element' && !e.ctrlKey) {
-			$selectedElements = []
+			$selectedBrdElems = []
 		}
 
 		// TOFIX: offset shifts slightly when zooming
 		if ($tokenTool) {
-			createElement(
-				'token',
-				data.slug,
-				data.session.user.id,
-				e.offsetX,
-				e.offsetY,
-			)
+			createBrdElem('token', data.slug, data.session.user.id, e.offsetX, e.offsetY)
 			return
 		}
 	}
@@ -142,7 +136,6 @@
 	on:mousemove={onMouseMove}
 	on:touchmove={onTouchMove}
 />
-
 
 <!-- // console.log('layer: ', e.layerX, e.layerY);
 // console.log('client: ', e.clientX, e.clientY);

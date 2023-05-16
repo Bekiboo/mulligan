@@ -2,14 +2,15 @@
 	import Board from './Board.svelte'
 	import { supabase } from '$lib/db/supabase'
 	import { readable, get } from 'svelte/store'
-	import { elementList } from '$lib/stores/elements'
-	import ElementComp from './elements/ElementComp.svelte'
-	import { movingElement } from '$lib/stores/states'
+	import { brdElemList } from '$lib/stores/brdElem'
+	import BrdElemComp from './brdElems/BrdElemComp.svelte'
+	import { movingBrdElem } from '$lib/stores/states'
 	import { onMount } from 'svelte'
+	import type { BrdElem } from '$lib/types'
 
 	export let data: any
 
-	export const elements = readable(data.game, (set) => {
+	export const brdElems = readable(data.game, (set) => {
 		supabase
 			.from(`element`)
 			.select()
@@ -18,28 +19,28 @@
 
 		const subscription = supabase
 			.channel(data.slug)
-			// listen to postgres changes on the 'element' table where the id is the same as the game slug
+			// listen to postgres changes on the 'brdElem' table where the id is the same as the game slug
 			.on(
 				'postgres_changes',
 				{ event: '*', schema: 'public', table: 'element', filter: `game_slug=eq.${data.slug}` },
 				(payload) => {
 					switch (payload.eventType) {
 						case 'INSERT':
-							set([...get(elements), payload.new])
+							set([...get(brdElems), payload.new])
 							break
 						case 'UPDATE':
-							// set movingelement for animation
-							movingElement.set(payload.new.id)
-							setTimeout(() => movingElement.set(null), 500)
+							// set movingbrdElem for animation
+							movingBrdElem.set(payload.new.id)
+							setTimeout(() => movingBrdElem.set(null), 500)
 							set([
-								...get(elements).map((element: Element) =>
-									element.id === payload.new.id ? payload.new : element
+								...get(brdElems).map((brdElem: BrdElem) =>
+									brdElem.id === payload.new.id ? payload.new : brdElem
 								)
 							])
 
 							break
 						case 'DELETE':
-							set([...get(elements).filter((element: Element) => element.id !== payload.old.id)])
+							set([...get(brdElems).filter((brdElem: BrdElem) => brdElem.id !== payload.old.id)])
 							break
 						default:
 							break
@@ -50,8 +51,8 @@
 		// TODO: Unsubscribe from Supabase?
 	})
 
-	elements.subscribe((elements) => {
-		elementList?.set(elements)
+	brdElems.subscribe((brdElems) => {
+		brdElemList?.set(brdElems)
 	})
 
 	onMount(() => {
@@ -66,8 +67,8 @@
 <Board boardWidth={boardDims.width} boardHeight={boardDims.height} {data}>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div style="width:{boardDims.width}px;height:{boardDims.height}px">
-		{#each $elementList as element}
-			<ElementComp {element} />
+		{#each $brdElemList as brdElem}
+			<BrdElemComp {brdElem} />
 		{/each}
 	</div>
 </Board>

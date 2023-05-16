@@ -1,22 +1,18 @@
 import { supabase } from '$lib/db/supabase'
-import type { PageLoad } from './$types';
+import type { BrdElem } from '$lib/types'
+import type { PageLoad } from './$types'
 
 export const load = (async ({ params }) => {
-  const { slug } = params
+	const { slug } = params
 
-  const { data, error } = await supabase
-    .from(`element`)
-    .select()
-    .eq('game_slug', slug)
-    
-    const elements: Element[] = data as Element[];
+	const { data, error } = await supabase.from(`element`).select().eq('game_slug', slug)
 
-    if (error)  console.error('Error while loading elements: ' + error)
+	const brdElems: BrdElem[] = data as BrdElem[]
 
-    return {
-      game: elements,
-      slug
-    }
-  
-}
-) satisfies PageLoad;
+	if (error) console.error('Error while loading brdElems: ' + error)
+
+	return {
+		game: brdElems,
+		slug
+	}
+}) satisfies PageLoad

@@ -1,24 +1,28 @@
 <script lang="ts">
-	import { deleteElement } from '$lib/db/elementService'
-	import { elementList, selectedElements } from '$lib/stores/elements'
+	import { deleteBrdElem } from '$lib/db/brdElemService'
+	import { brdElemList, selectedBrdElems } from '$lib/stores/brdElem'
 	import { hoveringTrash } from '$lib/stores/states'
 	import { fade } from 'svelte/transition'
 	import { onDestroy } from 'svelte'
+	import type { BrdElem } from '$lib/types'
 
-	let elementsToDelete: any = null
+	let brdElemsToDelete: BrdElem[]
 
 	function mouseUp() {
-		// first delete element in client, then in db
-		elementList?.update((elements: any) =>
-			elements.filter((element: Element) => element.id !== elementsToDelete.id)
+		// first delete brdElem in client, then in db
+		brdElemList?.update((brdElems: BrdElem[]) =>
+			brdElems.filter(
+				(brdElem: BrdElem) => !brdElemsToDelete.some((elem) => elem.id === brdElem.id)
+			)
 		)
-		deleteElement(elementsToDelete)
+		deleteBrdElem(brdElemsToDelete)
 	}
 
 	function mouseEnter() {
-		$hoveringTrash = true		
-		// map selectedElements ids to elementsToDelete
-		elementsToDelete = $selectedElements?.map((element: Element) => element.id)
+		$hoveringTrash = true
+		// map selectedBrdElems ids to brdElemsToDelete
+		brdElemsToDelete = $selectedBrdElems
+		// ?.map((brdElem: BrdElem) => brdElem.id)
 	}
 
 	onDestroy(() => {
@@ -26,7 +30,7 @@
 	})
 </script>
 
-<!-- create element to delete selected element on hover -->
+<!-- create brdElem to delete selected brdElem on hover -->
 <div class="fixed flex h-screen items-center right-20 pointer-events-none">
 	<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 	<div
@@ -35,7 +39,7 @@
 		out:fade={{ duration: 300, easing: (t) => t * t * t }}
 		on:mouseenter={mouseEnter}
 		on:mouseup={mouseUp}
-		on:mouseleave={() => ($hoveringTrash = false)}	
+		on:mouseleave={() => ($hoveringTrash = false)}
 	>
 		<svg
 			fill="none"
@@ -55,7 +59,7 @@
 </div>
 
 <style>
-    .glass {
+	.glass {
 		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 		backdrop-filter: blur(8.2px);
 		-webkit-backdrop-filter: blur(8.2px);

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { selectedElements } from '$lib/stores/elements'
-	import type { Element } from '$lib/types'
+	// import { selectedBrdElems } from '$lib/stores/brdElems'
+	import type { BrdElem } from '$lib/types'
 
-	export let element: Element
+	export let brdElem: BrdElem
 	export let selected: boolean
 
-	// check if element is selected
+	// check if brdElem is selected
 </script>
 
 <div
@@ -13,7 +13,7 @@
 	aria-label="element"
 	class:selected
 >
-	{element.id}
+	{brdElem.id}
 </div>
 
 <style>

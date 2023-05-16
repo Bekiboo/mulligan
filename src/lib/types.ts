@@ -1,45 +1,45 @@
-export type Element = Token | Card | Note;
+export type BrdElem = Token | Card | Note
 
-export type BaseElement = {
-	game_slug: string;
-	pos: Position;
-	owner: string;
-	id: string;
-	shared: boolean;
-	pinned: boolean;
-	visible: boolean;
-	on_background: boolean;
-};
+export type BaseBrdElem = {
+	game_slug: string
+	pos: Position
+	owner: string
+	id: string
+	shared: boolean
+	pinned: boolean
+	visible: boolean
+	on_background: boolean
+}
 
-export type Token = BaseElement & {
-	type: 'token';
-	color: string;
-	size: number;
-};
+export type Token = BaseBrdElem & {
+	type: 'token'
+	color: string
+	size: number
+}
 
-export type Card = BaseElement & {
-	type: 'card';
-	title: string;
-	description: string;
-};
+export type Card = BaseBrdElem & {
+	type: 'card'
+	title: string
+	description: string
+}
 
-export type Note = BaseElement & {
-	type: 'note';
-	text: string;
-};
+export type Note = BaseBrdElem & {
+	type: 'note'
+	text: string
+}
 
 export type Position = {
-	x: number;
-	y: number;
-	z: number;
-};
+	x: number
+	y: number
+	z: number
+}
 
 export type BoardStateMessage = {
-	type: 'boardState';
-	elements: Element[];
-};
+	type: 'boardState'
+	brdElems: BrdElem[]
+}
 
 export type User = {
-	id: string;
-	email: string;
+	id: string
+	email: string
 }

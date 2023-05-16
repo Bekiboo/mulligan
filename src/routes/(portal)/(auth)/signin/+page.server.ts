@@ -4,13 +4,12 @@ import { AuthUserSchema } from '$lib/validationSchema'
 import { ForgotPasswordSchema } from '$lib/validationSchema'
 import type { Actions } from './$types'
 
-export const actions: Actions = {
+export const actions = {
 	signIn: async (event) => {
 		const { request } = event
 		const { supabaseClient } = await getSupabase(event)
 		const formData: any = Object.fromEntries(await request.formData())
-		const { email } = formData
-		const { password } = formData
+		const { email, password } = formData
 
 		// Form Validation
 		try {
@@ -25,10 +24,12 @@ export const actions: Actions = {
 			})
 		}
 
-		const { data, error }: { data: any, error: any } = await supabaseClient.auth.signInWithPassword({
-			email,
-			password
-		})		
+		const { data, error }: { data: any; error: any } = await supabaseClient.auth.signInWithPassword(
+			{
+				email,
+				password
+			}
+		)
 
 		if (error) {
 			if (error && error.status === 400) {
@@ -100,4 +101,4 @@ export const actions: Actions = {
 			})
 		}
 	}
-}
+} satisfies Actions
