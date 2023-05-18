@@ -1,5 +1,5 @@
 // function to get the middle of height and width of an element
-export function getCenter(element: HTMLElement) {
+export function getCenter(element: HTMLElement): { middleX: number; middleY: number } {
 	const { height, width } = element.getBoundingClientRect()
 	return {
 		middleX: width / 2,
@@ -7,22 +7,20 @@ export function getCenter(element: HTMLElement) {
 	}
 }
 
-
 // function to get cursor position
-export function getCursorPosition(event: MouseEvent) {
-    return {
-        x: event.clientX,
-        y: event.clientY
-    }
-}
+// export function getCursorPosition(event: MouseEvent): { x: number; y: number } {
+// 	return {
+// 		x: event.clientX,
+// 		y: event.clientY
+// 	}
+// }
 
-
-export function genRandomString(length: number) {
-   const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-   const charLength = chars.length;
-   let result = '';
-   for ( let i = 0; i < length; i++ ) {
-      result += chars.charAt(Math.floor(Math.random() * charLength));
-   }
-   return result;
+export function genRandomString(length: number): string {
+	const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+	const charLength = chars.length
+	let result = ''
+	for (let i = 0; i < length; i++) {
+		result += chars.charAt(Math.floor(Math.random() * charLength))
+	}
+	return result
 }

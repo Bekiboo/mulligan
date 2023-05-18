@@ -9,7 +9,7 @@
 	let showModal = false
 	const close = () => (showModal = false)
 
-	let errors: any = []
+	let errors: { name?: string }
 
 	const submitForm = () => {
 		loadingState.set(true)
@@ -25,7 +25,7 @@
 				})
 				return await applyAction(result)
 			}
-			errors = []
+			errors = {}
 			toast.success('Game successfully created', {
 				duration: 5000,
 				style: 'margin-top: 4rem'
@@ -69,8 +69,8 @@
 				placeholder="My Mulligan Game"
 				required
 			/>
-			{#if errors?.name}
-				<div class="text-yellow-300 font-bold">{errors?.name[0]}</div>
+			{#if errors}
+				<div class="text-yellow-300 font-bold">{errors.name}</div>
 			{/if}
 
 			<!-- <label for="email" class="block mb-2 text-sm font-medium">Mode</label>

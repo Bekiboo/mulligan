@@ -1,5 +1,7 @@
 <script lang="ts">
-	export let session: any
+	import type { Session } from '@supabase/supabase-js'
+
+	export let session: Session | null
 </script>
 
 <!-- Placeholder to account for Navbar height -->

@@ -9,10 +9,11 @@
 	import { Toaster } from 'svelte-french-toast'
 	import LoadingScreen from '$lib/components/overlay/LoadingScreen.svelte'
 	import PreloadingIndicator from '$lib/components/overlay/PreloadingIndicator.svelte'
+	import type { Session } from '@supabase/supabase-js'
 
-	export let data: any
+	export let data: Session
 
-	$user = { id: data.user?.id, email: data.user?.email }
+	$user = { id: data.user?.id, email: data.user?.email ?? '' }
 
 	onMount(() => {
 		const {

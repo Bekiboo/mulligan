@@ -43,3 +43,10 @@ export type User = {
 	id: string
 	email: string
 }
+
+export type FormError = {
+	email?: string
+	password?: string
+	confirmPassword?: string
+	passwordNotMatching?: boolean
+}

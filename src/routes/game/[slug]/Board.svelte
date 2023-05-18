@@ -39,7 +39,7 @@
 	let layerX: number
 	let layerY: number
 
-	const onMouseDown = (e: any) => {
+	const onMouseDown = (e: MouseEvent) => {
 		moving = true
 		originalX = e.clientX
 		originalY = e.clientY
@@ -47,7 +47,7 @@
 		originalTop = top
 	}
 
-	const onTouchStart = (e: any) => {
+	const onTouchStart = (e: TouchEvent) => {
 		moving = true
 		originalX = e.touches[0].clientX
 		originalY = e.touches[0].clientY
@@ -55,7 +55,7 @@
 		originalTop = top
 	}
 
-	const onMouseUp = (e: any) => {
+	const onMouseUp = (e: MouseEvent | TouchEvent) => {
 		moving = false
 		$dragging = false
 	}
@@ -75,7 +75,7 @@
 		top = originalTop + (e.clientY - originalY)
 	}
 
-	function onTouchMove(e: any) {
+	function onTouchMove(e: TouchEvent) {
 		if ($dragging) return
 
 		if (!moving) return
@@ -87,7 +87,7 @@
 	let MAX_ZOOM = 2
 	let MIN_ZOOM = 0.5
 	// TODO: fix to zoom on pointer
-	function wheel(e: any) {
+	function wheel(e: WheelEvent) {
 		if ($dragging) return
 		// let layer = { x: layerX, y: layerY }
 		$zoom = $zoom || 1
@@ -99,11 +99,13 @@
 	}
 	// TODO: add Pinch to zoom
 
-	function handleBoardClick(e: any) {
+	function handleBoardClick(e: MouseEvent) {
 		if ($dragging) return
 
+		const target = e.target as HTMLElement
+
 		// unselect all brdElems if clicked on board
-		if (e.target.ariaLabel != 'element' && !e.ctrlKey) {
+		if (target && target.getAttribute('aria-label') !== 'element' && !e.ctrlKey) {
 			$selectedBrdElems = []
 		}
 

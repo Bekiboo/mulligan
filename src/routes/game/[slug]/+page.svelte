@@ -7,15 +7,20 @@
 	import { movingBrdElem } from '$lib/stores/states'
 	import { onMount } from 'svelte'
 	import type { BrdElem } from '$lib/types'
+	import type { PageData } from './$types'
 
-	export let data: any
+	export let data: PageData
 
 	export const brdElems = readable(data.game, (set) => {
 		supabase
 			.from(`element`)
 			.select()
 			.eq('game_slug', data.slug)
-			.then(({ error, data }) => set(data))
+			.then(({ error, data }) => {
+				if (data !== null) {
+					set(data as BrdElem[])
+				}
+			})
 
 		const subscription = supabase
 			.channel(data.slug)
@@ -26,7 +31,7 @@
 				(payload) => {
 					switch (payload.eventType) {
 						case 'INSERT':
-							set([...get(brdElems), payload.new])
+							set([...get(brdElems), payload.new as BrdElem])
 							break
 						case 'UPDATE':
 							// set movingbrdElem for animation
@@ -34,7 +39,7 @@
 							setTimeout(() => movingBrdElem.set(null), 500)
 							set([
 								...get(brdElems).map((brdElem: BrdElem) =>
-									brdElem.id === payload.new.id ? payload.new : brdElem
+									brdElem.id === payload.new.id ? (payload.new as BrdElem) : brdElem
 								)
 							])
 

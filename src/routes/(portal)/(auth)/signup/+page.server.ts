@@ -1,17 +1,17 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit'
 import { getSupabase } from '@supabase/auth-helpers-sveltekit'
-import { registrating } from '$lib/stores/states'
 import { RegisterUserSchema } from '$lib/validationSchema'
 
 export const actions: Actions = {
 	signUp: async (event) => {
 		const { request } = event
 		const { supabaseClient } = await getSupabase(event)
-		const formData: any = Object.fromEntries(await request.formData())
-
-		const email = formData.email
-		const password = formData.password
-		const confirmPassword = formData.confirmPassword
+		const formData = Object.fromEntries(await request.formData())
+		const { email, password, confirmPassword } = formData as {
+			email: string
+			password: string
+			confirmPassword: string
+		}
 
 		if (password != confirmPassword) {
 			return fail(400, {

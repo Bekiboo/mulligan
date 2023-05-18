@@ -5,16 +5,17 @@
 	import { enhance, applyAction } from '$app/forms'
 	import type { ActionResult } from '@sveltejs/kit'
 	import Cross from '$lib/components/svg/Cross.svelte'
+	import type { FormError } from '$lib/types'
 
 	let showModal = false
 	const close = () => (showModal = false)
 
-	let errors: any = []
+	let errors: FormError = {}
 
 	const submitForm = () => {
-		loadingState.set(true)
+		$loadingState = true
 		return async ({ result, update }: { result: ActionResult; update: any }) => {
-			loadingState.set(false)
+			$loadingState = false
 
 			if (result.type === 'failure') {
 				errors = result.data?.errors
@@ -25,7 +26,7 @@
 				})
 				return await applyAction(result)
 			}
-			errors = []
+			errors = {}
 			toast.success('Check your email', {
 				duration: 5000,
 				style: 'margin-top: 4rem'
@@ -70,8 +71,8 @@
 				placeholder="name@company.com"
 				required
 			/>
-			{#if errors?.email}
-				<div class="text-yellow-300 font-bold">{errors?.email[0]}</div>
+			{#if errors.email}
+				<div class="text-yellow-300 font-bold">{errors.email[0]}</div>
 			{/if}
 
 			<button

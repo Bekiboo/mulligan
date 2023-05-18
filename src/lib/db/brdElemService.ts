@@ -23,7 +23,7 @@ export async function createBrdElem(
 		y,
 		z: Math.round(Math.random() * 1000000)
 	}
-	let propty: any
+	let propty: Record<string, unknown> = {}
 
 	switch (type) {
 		case 'token':

@@ -6,9 +6,9 @@ import { genRandomString } from '$lib/utils'
 
 export const actions: Actions = {
 	createGame: async (event) => {
-		const { request, url } = event
+		const { request } = event
 		const { supabaseClient } = await getSupabase(event)
-		const formData: any = Object.fromEntries(await request.formData())
+		const formData = Object.fromEntries(await request.formData())
 		const { name } = formData
 
 		try {
@@ -26,18 +26,15 @@ export const actions: Actions = {
 
 		const user = supabaseClient.auth.getUser()
 
-		
-
 		const { data, error }: { data: any; error: any } = await supabaseClient.from('game').insert([
 			{
 				owner: (await user)?.data?.user?.id,
 				name,
 				slug: genRandomString(9)
-
 			}
 		])
 
-		// const { error }: { error: any } = await supabaseClient.auth.resetPasswordForEmail(email, {
+		// const { error }: { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
 		// 	redirectTo: `${url.origin}/account/update-password`
 		// })
 

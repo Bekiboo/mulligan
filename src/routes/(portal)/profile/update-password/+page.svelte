@@ -3,15 +3,17 @@
 	import { loadingState } from '$lib/stores/states'
 	import type { ActionResult } from '@sveltejs/kit'
 	import toast from 'svelte-french-toast'
+	import type { PageData } from './$types'
+	import type { FormError } from '$lib/types'
 
-	export let data: any
+	export let data: PageData
 	export let form: any
-	let errors: any
+	let errors: FormError = {}
 
 	const submitForm = () => {
-		loadingState.set(true)
+		$loadingState = true
 		return async ({ result, update }: { result: ActionResult; update: any }) => {
-			loadingState.set(false)
+			$loadingState = false
 
 			if (result.type === 'failure') {
 				errors = result.data?.errors
@@ -22,7 +24,7 @@
 				})
 				return await applyAction(result)
 			}
-			errors = []
+			errors = {}
 			toast.success('Password changed', {
 				duration: 5000,
 				style: 'margin-top: 4rem'
@@ -34,9 +36,7 @@
 
 <div class="w-full bg-[#3F589E] rounded-2xl shadow md:mt-0 sm:max-w-md xl:p-0">
 	<div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-		<h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl">
-			Update Password
-		</h1>
+		<h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl">Update Password</h1>
 
 		<p class="font-medium mb-4">
 			Hi {data.session?.user.email ?? ''}, Enter your new password below and confirm it
@@ -59,9 +59,7 @@
 				{/if}
 			</div>
 			<div>
-				<label for="confirmPassword" class="block mb-2 text-sm font-medium"
-					>Confirm Password</label
-				>
+				<label for="confirmPassword" class="block mb-2 text-sm font-medium">Confirm Password</label>
 				<input
 					type="password"
 					name="confirmPassword"

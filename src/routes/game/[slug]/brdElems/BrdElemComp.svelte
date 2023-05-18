@@ -28,7 +28,7 @@
 		// originClientY = e.touches[0].clientY
 	}
 
-	const onMouseDown = (e: any) => {
+	const onMouseDown = (e: MouseEvent) => {
 		$clickStartPos = { x: e.clientX, y: e.clientY }
 
 		if ($selectedBrdElems.length > 0 && selected) {
@@ -38,21 +38,21 @@
 		$dragging = true
 	}
 
-	const onGlobalMouseDown = (e: any) => {
+	const onGlobalMouseDown = (e: MouseEvent) => {
 		// required for multiple moving
 		if (selected) {
 			originTokenPos = { x: brdElem.pos.x, y: brdElem.pos.y }
 		}
 	}
 
-	const onMouseUp = (e: any) => {
+	const onMouseUp = (e: MouseEvent | TouchEvent) => {
 		console.log(brdElem)
 		console.log($selectedBrdElems)
 
 		// multiple selection with ctrl key
 		if (e.ctrlKey) {
 			if (selected) {
-				$selectedBrdElems = $selectedBrdElems.filter((el: any) => el.id != brdElem.id)
+				$selectedBrdElems = $selectedBrdElems.filter((el: BrdElem) => el.id != brdElem.id)
 			} else {
 				if ($selectedBrdElems.length >= 10) return
 				$selectedBrdElems = [...$selectedBrdElems, brdElem]
@@ -75,7 +75,7 @@
 		}
 	}
 
-	const onGlobalMouseUp = (e: any) => {
+	const onGlobalMouseUp = (e: MouseEvent) => {
 		if (e.ctrlKey) return
 		if ($hoveringTrash) return
 		// if brdElem is selected and has moved
@@ -87,7 +87,7 @@
 		}
 	}
 
-	function onMouseMove(e: any) {
+	function onMouseMove(e: MouseEvent) {
 		if (!$dragging) return
 		if (selected && !e.ctrlKey) {
 			brdElem.pos.x = Math.round(originTokenPos.x + (e.clientX - $clickStartPos.x) * (1 / $zoom))
@@ -95,7 +95,7 @@
 		}
 	}
 
-	function onTouchMove(e: any) {
+	function onTouchMove(e: TouchEvent) {
 		// if ($dragging?.id == brdElem.id) {
 		// 	brdElem.pos.x = originTokenPos.x + (e.touches[0].clientX - originClientX) * (1 / $zoom)
 		// 	brdElem.pos.y = originTokenPos.y + (e.touches[0].clientY - originClientY) * (1 / $zoom)

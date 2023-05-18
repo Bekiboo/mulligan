@@ -8,8 +8,8 @@ export const actions = {
 	signIn: async (event) => {
 		const { request } = event
 		const { supabaseClient } = await getSupabase(event)
-		const formData: any = Object.fromEntries(await request.formData())
-		const { email, password } = formData
+		const formData = Object.fromEntries(await request.formData())
+		const { email, password } = formData as { email: string; password: string }
 
 		// Form Validation
 		try {
@@ -24,15 +24,15 @@ export const actions = {
 			})
 		}
 
-		const { data, error }: { data: any; error: any } = await supabaseClient.auth.signInWithPassword(
-			{
-				email,
-				password
-			}
-		)
+		const { error }: { error: any } = await supabaseClient.auth.signInWithPassword({
+			email,
+			password
+		})
 
 		if (error) {
 			if (error && error.status === 400) {
+				console.log('error: ' + error)
+
 				return fail(400, {
 					error: true,
 					message: 'Invalid credentials',
@@ -61,8 +61,8 @@ export const actions = {
 	resetPassword: async (event) => {
 		const { request, url } = event
 		const { supabaseClient } = await getSupabase(event)
-		const formData: any = Object.fromEntries(await request.formData())
-		const { email } = formData
+		const formData = Object.fromEntries(await request.formData())
+		const { email } = formData as { email: string }
 
 		try {
 			ForgotPasswordSchema.parse({ email })

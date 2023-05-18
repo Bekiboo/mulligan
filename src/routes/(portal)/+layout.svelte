@@ -1,7 +1,8 @@
-<script lang='ts'>
+<script lang="ts">
 	import Navbar from './Navbar.svelte'
+	import type { LayoutData } from './$types'
 
-	export let data: any	
+	export let data: LayoutData
 </script>
 
 <Navbar session={data.session} />
