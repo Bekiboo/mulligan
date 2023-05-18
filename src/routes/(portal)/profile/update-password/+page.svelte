@@ -7,12 +7,11 @@
 	import type { FormError } from '$lib/types'
 
 	export let data: PageData
-	export let form: any
 	let errors: FormError = {}
 
 	const submitForm = () => {
 		$loadingState = true
-		return async ({ result, update }: { result: ActionResult; update: any }) => {
+		return async ({ result, update }: { result: ActionResult; update: () => void }) => {
 			$loadingState = false
 
 			if (result.type === 'failure') {
@@ -49,7 +48,6 @@
 					type="password"
 					name="password"
 					id="password"
-					value={form?.password ?? ''}
 					class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
 					placeholder="••••••••"
 					required

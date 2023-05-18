@@ -3,6 +3,8 @@ import { getSupabase } from '@supabase/auth-helpers-sveltekit'
 import { AuthUserSchema } from '$lib/validationSchema'
 import { ForgotPasswordSchema } from '$lib/validationSchema'
 import type { Actions } from './$types'
+import { ZodError } from 'zod'
+import type { AuthError, AuthResponse } from '@supabase/supabase-js'
 
 export const actions = {
 	signIn: async (event) => {
@@ -14,25 +16,25 @@ export const actions = {
 		// Form Validation
 		try {
 			AuthUserSchema.parse({ email, password })
-		} catch (err: any) {
-			const { fieldErrors: errors } = err.flatten()
-			return fail(400, {
-				error: true,
-				message: 'Invalid form\nCheck the fields',
-				data: formData,
-				errors
-			})
+		} catch (err: unknown) {
+			if (err instanceof ZodError) {
+				const { fieldErrors: errors } = err.flatten()
+				return fail(400, {
+					error: true,
+					message: 'Invalid form\nCheck the fields',
+					data: formData,
+					errors
+				})
+			}
 		}
 
-		const { error }: { error: any } = await supabaseClient.auth.signInWithPassword({
+		const { error }: any = await supabaseClient.auth.signInWithPassword({
 			email,
 			password
 		})
 
 		if (error) {
 			if (error && error.status === 400) {
-				console.log('error: ' + error)
-
 				return fail(400, {
 					error: true,
 					message: 'Invalid credentials',
@@ -66,15 +68,16 @@ export const actions = {
 
 		try {
 			ForgotPasswordSchema.parse({ email })
-		} catch (err: any) {
-			console.log(err)
-			const { fieldErrors: errors } = err.flatten()
-			return fail(400, {
-				error: true,
-				message: 'Invalid form\nCheck the fields',
-				data: formData,
-				errors
-			})
+		} catch (err: unknown) {
+			if (err instanceof ZodError) {
+				const { fieldErrors: errors } = err.flatten()
+				return fail(400, {
+					error: true,
+					message: 'Invalid form\nCheck the fields',
+					data: formData,
+					errors
+				})
+			}
 		}
 
 		const { error }: { error: any } = await supabaseClient.auth.resetPasswordForEmail(email, {

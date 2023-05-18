@@ -10,8 +10,9 @@
 
 	const submitForm = () => {
 		$loadingState = true
-		return async ({ result, update }: { result: ActionResult; update: any }) => {
+		return async ({ result, update }: { result: ActionResult; update: () => void }) => {
 			$loadingState = false
+			console.log(result.type)
 
 			if (result.type === 'failure') {
 				errors = result.data?.errors
@@ -22,11 +23,13 @@
 				})
 				return await applyAction(result)
 			}
+
 			errors = {}
 			toast.success('Welcome to the dashboard!', {
 				duration: 2000,
 				style: 'margin-top: 4rem'
 			})
+
 			update()
 		}
 	}

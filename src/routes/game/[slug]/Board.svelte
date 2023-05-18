@@ -5,10 +5,11 @@
 	import { tokenTool } from '$lib/stores/toolbar'
 	import { onMount } from 'svelte'
 	import ZoomIndicator from './ui/ZoomIndicator.svelte'
+	import type { Session } from '@supabase/supabase-js'
 
 	export let boardWidth: number
 	export let boardHeight: number
-	export let data: any
+	export let data: { slug: string; session: Session }
 	let windowWidth: number
 	let windowHeight: number
 	let left: number
@@ -36,9 +37,6 @@
 	let dx: number
 	let dy: number
 
-	let layerX: number
-	let layerY: number
-
 	const onMouseDown = (e: MouseEvent) => {
 		moving = true
 		originalX = e.clientX
@@ -60,12 +58,9 @@
 		$dragging = false
 	}
 
-	function onMouseMove(e: any) {
+	function onMouseMove(e: MouseEvent) {
 		clientX = e.clientX
 		clientY = e.clientY
-
-		layerX = e.layerX
-		layerY = e.layerY
 
 		if ($dragging) return
 

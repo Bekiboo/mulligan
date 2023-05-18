@@ -1,8 +1,7 @@
-// import { formatError, fault, success } from '$lib/utils';
 import { UpdatePasswordSchema } from '$lib/validationSchema'
 import { getSupabase } from '@supabase/auth-helpers-sveltekit'
 import { fail, redirect } from '@sveltejs/kit'
-// import { ZodError } from 'zod'
+import { ZodError } from 'zod'
 
 export const load = async (event) => {
 	const { session } = await getSupabase(event)
@@ -30,14 +29,16 @@ export const actions = {
 
 		try {
 			UpdatePasswordSchema.parse({ password, confirmPassword })
-		} catch (err: any) {
-			const { fieldErrors: errors } = err.flatten()
-			return fail(400, {
-				error: true,
-				message: 'Invalid form\nCheck the fields',
-				data: formData,
-				errors
-			})
+		} catch (err: unknown) {
+			if (err instanceof ZodError) {
+				const { fieldErrors: errors } = err.flatten()
+				return fail(400, {
+					error: true,
+					message: 'Invalid form\nCheck the fields',
+					data: formData,
+					errors
+				})
+			}
 		}
 
 		try {

@@ -14,7 +14,7 @@
 
 	const submitForm = () => {
 		$loadingState = true
-		return async ({ result, update }: { result: ActionResult; update: any }) => {
+		return async ({ result, update }: { result: ActionResult; update: () => void }) => {
 			$loadingState = false
 
 			if (result.type === 'failure') {

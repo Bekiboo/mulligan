@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import { supabase } from '$lib/db/supabase'
+	import type { PageData } from './$types'
 	import CreateGame from './CreateGame.svelte'
 
-	export let data: any
-	let games = data.games
+	export let data: PageData
+	let games = data.games ?? []
+	const user = data.user ?? { email: '' }
 
 	async function signOut() {
 		const { error } = await supabase.auth.signOut()
@@ -17,7 +19,7 @@
 <div class="w-full bg-[#3F589E] rounded-2xl shadow sm:max-w-md xl:p-0 mb-4">
 	<div class="p-6 space-y-4 md:space-y-6 sm:p-8">
 		<div class="font-bold leading-tight tracking-tight">
-			Signed in as: <span class="ml-2 font-normal">{data.user.email}</span>
+			Signed in as: <span class="ml-2 font-normal">{user.email}</span>
 		</div>
 	</div>
 </div>

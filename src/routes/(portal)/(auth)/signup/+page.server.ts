@@ -1,6 +1,7 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit'
 import { getSupabase } from '@supabase/auth-helpers-sveltekit'
 import { RegisterUserSchema } from '$lib/validationSchema'
+import { ZodError } from 'zod'
 
 export const actions: Actions = {
 	signUp: async (event) => {
@@ -29,14 +30,16 @@ export const actions: Actions = {
 				password,
 				confirmPassword
 			})
-		} catch (err: any) {
-			const { fieldErrors: errors } = err.flatten()
-			return fail(400, {
-				error: true,
-				message: 'Invalid form\nCheck the fields',
-				data: formData,
-				errors
-			})
+		} catch (err: unknown) {
+			if (err instanceof ZodError) {
+				const { fieldErrors: errors } = err.flatten()
+				return fail(400, {
+					error: true,
+					message: 'Invalid form\nCheck the fields',
+					data: formData,
+					errors
+				})
+			}
 		}
 
 		try {

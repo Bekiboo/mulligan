@@ -13,7 +13,7 @@
 
 	const submitForm = () => {
 		loadingState.set(true)
-		return async ({ result, update }: { result: ActionResult; update: any }) => {
+		return async ({ result, update }: { result: ActionResult; update: () => void }) => {
 			loadingState.set(false)
 
 			if (result.type === 'failure') {
