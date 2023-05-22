@@ -1,12 +1,9 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit'
-import { getSupabase } from '@supabase/auth-helpers-sveltekit'
 import { RegisterUserSchema } from '$lib/validationSchema'
 import { ZodError } from 'zod'
 
 export const actions: Actions = {
-	signUp: async (event) => {
-		const { request } = event
-		const { supabaseClient } = await getSupabase(event)
+	signUp: async ({ request, locals: { supabase } }) => {
 		const formData = Object.fromEntries(await request.formData())
 		const { email, password, confirmPassword } = formData as {
 			email: string
@@ -43,7 +40,7 @@ export const actions: Actions = {
 		}
 
 		try {
-			const { error } = await supabaseClient.auth.signUp({
+			const { error } = await supabase.auth.signUp({
 				email,
 				password
 			})

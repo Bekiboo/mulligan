@@ -7,14 +7,6 @@ export function getCenter(element: HTMLElement): { middleX: number; middleY: num
 	}
 }
 
-// function to get cursor position
-// export function getCursorPosition(event: MouseEvent): { x: number; y: number } {
-// 	return {
-// 		x: event.clientX,
-// 		y: event.clientY
-// 	}
-// }
-
 export function genRandomString(length: number): string {
 	const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 	const charLength = chars.length

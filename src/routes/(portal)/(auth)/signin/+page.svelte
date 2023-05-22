@@ -12,7 +12,6 @@
 		$loadingState = true
 		return async ({ result, update }) => {
 			$loadingState = false
-			console.log(result.type)
 
 			if (result.type === 'failure') {
 				errors = result.data?.errors

@@ -1,6 +1,3 @@
-// import { supabase } from '$lib/db/supabase'
-// import { user } from '$lib/stores/auth'
-// import { brdElemList } from '$lib/stores/brdElems'
 import type { BrdElem, Position } from '$lib/types'
 import type { SupabaseClient } from '@supabase/supabase-js'
 

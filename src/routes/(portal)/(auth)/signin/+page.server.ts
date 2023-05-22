@@ -51,14 +51,11 @@ export const actions = {
 	},
 
 	signOut: async ({ locals: { supabase } }) => {
-		// const { supabaseClient } = await getSupabase(event)
 		await supabase.auth.signOut()
 		throw redirect(303, '/signin')
 	},
 
 	resetPassword: async ({ request, locals: { supabase }, url }) => {
-		// const { request, url } = event
-		// const { supabaseClient } = await getSupabase(event)
 		const formData = Object.fromEntries(await request.formData())
 		const { email } = formData as { email: string }
 

@@ -1,12 +1,7 @@
-import { writable, type Writable } from 'svelte/store'
+import { writable } from 'svelte/store'
 
 export const loadingState = writable(false)
-// TODO: fix type
-// <{ status: boolean; email: string }>
-export const registrating = writable({
-	status: false,
-	email: ''
-})
+export const registrating = writable({ status: false, email: '' })
 export const adminMode = writable(false)
 export const zoom = writable(1)
 export const movingBrdElem = writable()

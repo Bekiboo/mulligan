@@ -1,5 +1,4 @@
 <script lang="ts">
-	// import { selectedBrdElems } from '$lib/stores/brdElems'
 	import type { BrdElem } from '$lib/types'
 
 	export let brdElem: BrdElem
