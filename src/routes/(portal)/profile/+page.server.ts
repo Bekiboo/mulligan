@@ -1,14 +1,11 @@
 import { fail } from '@sveltejs/kit'
-import { getSupabase } from '@supabase/auth-helpers-sveltekit'
 import { CreateGameSchema } from '$lib/validationSchema'
 import type { Actions } from './$types'
 import { genRandomString } from '$lib/utils'
 import { ZodError } from 'zod'
 
 export const actions: Actions = {
-	createGame: async (event) => {
-		const { request } = event
-		const { supabaseClient } = await getSupabase(event)
+	createGame: async ({ request, locals: { supabase } }) => {
 		const formData = Object.fromEntries(await request.formData())
 		const { name } = formData
 
@@ -26,9 +23,9 @@ export const actions: Actions = {
 			}
 		}
 
-		const user = supabaseClient.auth.getUser()
+		const user = supabase.auth.getUser()
 
-		await supabaseClient.from('game').insert([
+		await supabase.from('game').insert([
 			{
 				owner: (await user)?.data?.user?.id,
 				name,

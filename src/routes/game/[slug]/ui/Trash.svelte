@@ -5,8 +5,10 @@
 	import { fade } from 'svelte/transition'
 	import { onDestroy } from 'svelte'
 	import type { BrdElem } from '$lib/types'
+	import type { SupabaseClient } from '@supabase/supabase-js'
 
 	let brdElemsToDelete: BrdElem[]
+	export let supabase: SupabaseClient
 
 	function mouseUp() {
 		// first delete brdElem in client, then in db
@@ -15,7 +17,7 @@
 				(brdElem: BrdElem) => !brdElemsToDelete.some((elem) => elem.id === brdElem.id)
 			)
 		)
-		deleteBrdElem(brdElemsToDelete)
+		deleteBrdElem(supabase, brdElemsToDelete)
 	}
 
 	function mouseEnter() {

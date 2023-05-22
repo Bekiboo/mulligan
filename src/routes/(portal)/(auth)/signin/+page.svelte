@@ -1,16 +1,16 @@
 <script lang="ts">
 	import toast from 'svelte-french-toast'
 	import { enhance, applyAction } from '$app/forms'
-	import type { ActionResult } from '@sveltejs/kit'
 	import { loadingState } from '$lib/stores/states'
 	import ForgotPassword from './ForgotPassword.svelte'
 	import type { FormError } from '$lib/types'
+	import type { SubmitFunction } from '$app/forms'
 
 	let errors: FormError = {}
 
-	const submitForm = () => {
+	const submitForm: SubmitFunction = () => {
 		$loadingState = true
-		return async ({ result, update }: { result: ActionResult; update: () => void }) => {
+		return async ({ result, update }) => {
 			$loadingState = false
 			console.log(result.type)
 

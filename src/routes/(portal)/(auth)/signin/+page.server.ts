@@ -1,15 +1,11 @@
 import { fail, redirect } from '@sveltejs/kit'
-import { getSupabase } from '@supabase/auth-helpers-sveltekit'
 import { AuthUserSchema } from '$lib/validationSchema'
 import { ForgotPasswordSchema } from '$lib/validationSchema'
 import type { Actions } from './$types'
 import { ZodError } from 'zod'
-import type { AuthError, AuthResponse } from '@supabase/supabase-js'
 
 export const actions = {
-	signIn: async (event) => {
-		const { request } = event
-		const { supabaseClient } = await getSupabase(event)
+	signIn: async ({ request, locals: { supabase } }) => {
 		const formData = Object.fromEntries(await request.formData())
 		const { email, password } = formData as { email: string; password: string }
 
@@ -28,7 +24,7 @@ export const actions = {
 			}
 		}
 
-		const { error }: any = await supabaseClient.auth.signInWithPassword({
+		const { error }: any = await supabase.auth.signInWithPassword({
 			email,
 			password
 		})
@@ -54,15 +50,15 @@ export const actions = {
 		throw redirect(303, '/profile')
 	},
 
-	signOut: async (event) => {
-		const { supabaseClient } = await getSupabase(event)
-		await supabaseClient.auth.signOut()
+	signOut: async ({ locals: { supabase } }) => {
+		// const { supabaseClient } = await getSupabase(event)
+		await supabase.auth.signOut()
 		throw redirect(303, '/signin')
 	},
 
-	resetPassword: async (event) => {
-		const { request, url } = event
-		const { supabaseClient } = await getSupabase(event)
+	resetPassword: async ({ request, locals: { supabase }, url }) => {
+		// const { request, url } = event
+		// const { supabaseClient } = await getSupabase(event)
 		const formData = Object.fromEntries(await request.formData())
 		const { email } = formData as { email: string }
 
@@ -80,7 +76,7 @@ export const actions = {
 			}
 		}
 
-		const { error }: { error: any } = await supabaseClient.auth.resetPasswordForEmail(email, {
+		const { error }: { error: any } = await supabase.auth.resetPasswordForEmail(email, {
 			redirectTo: `${url.origin}/account/update-password`
 		})
 

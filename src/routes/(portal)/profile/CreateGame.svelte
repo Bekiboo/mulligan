@@ -3,17 +3,17 @@
 	import Modal from '$lib/components/overlay/Modal.svelte'
 	import { loadingState } from '$lib/stores/states'
 	import { enhance, applyAction } from '$app/forms'
-	import type { ActionResult } from '@sveltejs/kit'
 	import Cross from '$lib/components/svg/Cross.svelte'
+	import type { SubmitFunction } from '$app/forms'
 
 	let showModal = false
 	const close = () => (showModal = false)
 
 	let errors: { name?: string }
 
-	const submitForm = () => {
-		loadingState.set(true)
-		return async ({ result, update }: { result: ActionResult; update: () => void }) => {
+	const submitForm: SubmitFunction = () => {
+		$loadingState = true
+		return async ({ result, update }) => {
 			loadingState.set(false)
 
 			if (result.type === 'failure') {

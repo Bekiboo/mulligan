@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import { supabase } from '$lib/db/supabase'
 	import type { PageData } from './$types'
 	import CreateGame from './CreateGame.svelte'
 
@@ -9,7 +8,7 @@
 	const user = data.user ?? { email: '' }
 
 	async function signOut() {
-		const { error } = await supabase.auth.signOut()
+		const { error } = await data.supabase.auth.signOut()
 
 		goto('/')
 		return error

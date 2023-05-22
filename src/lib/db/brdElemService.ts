@@ -1,9 +1,10 @@
-import { supabase } from '$lib/db/supabase'
+// import { supabase } from '$lib/db/supabase'
 // import { user } from '$lib/stores/auth'
 // import { brdElemList } from '$lib/stores/brdElems'
 import type { BrdElem, Position } from '$lib/types'
+import type { SupabaseClient } from '@supabase/supabase-js'
 
-export async function updateBrdElemPos(brdElem: BrdElem): Promise<void> {
+export async function updateBrdElemPos(supabase: SupabaseClient, brdElem: BrdElem): Promise<void> {
 	// TODO: check if the brdElem is owned by the user
 	// Note: can update all brdElems at once with UPSERT, but might lead into bugs
 	const { error } = await supabase.from('element').update({ pos: brdElem.pos }).eq('id', brdElem.id)
@@ -12,6 +13,7 @@ export async function updateBrdElemPos(brdElem: BrdElem): Promise<void> {
 }
 
 export async function createBrdElem(
+	supabase: SupabaseClient,
 	type: string,
 	gameSlug: string,
 	owner: string,
@@ -61,7 +63,7 @@ export async function createBrdElem(
 	if (error) console.log(error)
 }
 
-export async function deleteBrdElem(brdElems: BrdElem[]): Promise<void> {
+export async function deleteBrdElem(supabase: SupabaseClient, brdElems: BrdElem[]): Promise<void> {
 	const ids = brdElems.map((brdElem) => brdElem.id)
 	const { error } = await supabase.from('element').delete().in('id', ids)
 

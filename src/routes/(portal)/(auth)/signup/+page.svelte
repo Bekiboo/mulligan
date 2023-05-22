@@ -2,15 +2,15 @@
 	import toast from 'svelte-french-toast'
 	import { enhance, applyAction } from '$app/forms'
 	import { loadingState, registrating } from '$lib/stores/states'
-	import type { ActionResult } from '@sveltejs/kit'
 	import type { FormError } from '$lib/types'
+	import type { SubmitFunction } from '$app/forms'
 
 	let email: string
 	let errors: FormError = {}
 
-	const submitForm = () => {
-		loadingState.set(true)
-		return async ({ result, update }: { result: ActionResult; update: () => void }) => {
+	const submitForm: SubmitFunction = () => {
+		$loadingState = true
+		return async ({ result, update }) => {
 			loadingState.set(false)
 
 			if (result.type === 'failure') {

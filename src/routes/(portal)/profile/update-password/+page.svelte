@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { enhance, applyAction } from '$app/forms'
 	import { loadingState } from '$lib/stores/states'
-	import type { ActionResult } from '@sveltejs/kit'
 	import toast from 'svelte-french-toast'
 	import type { PageData } from './$types'
 	import type { FormError } from '$lib/types'
+	import type { SubmitFunction } from '$app/forms'
 
 	export let data: PageData
 	let errors: FormError = {}
 
-	const submitForm = () => {
+	const submitForm: SubmitFunction = () => {
 		$loadingState = true
-		return async ({ result, update }: { result: ActionResult; update: () => void }) => {
+		return async ({ result, update }) => {
 			$loadingState = false
 
 			if (result.type === 'failure') {

@@ -6,8 +6,10 @@
 	import { onMount } from 'svelte'
 	import { clickStartPos, dragging, hoveringTrash, movingBrdElem, zoom } from '$lib/stores/states'
 	import TokenComp from './TokenComp.svelte'
+	import type { SupabaseClient } from '@supabase/supabase-js'
 
 	export let brdElem: BrdElem
+	export let supabase: SupabaseClient
 	let HTMLelement: HTMLElement
 	let middleX: number
 	let middleY: number
@@ -83,7 +85,7 @@
 			selected &&
 			(originTokenPos?.x != brdElem?.pos?.x || originTokenPos?.y != brdElem?.pos?.y)
 		) {
-			updateBrdElemPos(brdElem)
+			updateBrdElemPos(supabase, brdElem)
 		}
 	}
 

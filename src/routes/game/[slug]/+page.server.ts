@@ -1,8 +1,7 @@
 import { error } from '@sveltejs/kit'
-import { supabase } from '$lib/db/supabase'
 import type { PageServerLoad } from './$types'
 
-export const load = (async ({ params }) => {
+export const load = (async ({ params, locals: { supabase } }) => {
 	const { slug } = params
 
 	// Check if game exists. If not, throw 404 error

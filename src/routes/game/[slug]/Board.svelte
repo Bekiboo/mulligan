@@ -5,11 +5,13 @@
 	import { tokenTool } from '$lib/stores/toolbar'
 	import { onMount } from 'svelte'
 	import ZoomIndicator from './ui/ZoomIndicator.svelte'
-	import type { Session } from '@supabase/supabase-js'
+	import type { Session, SupabaseClient } from '@supabase/supabase-js'
 
 	export let boardWidth: number
 	export let boardHeight: number
-	export let data: { slug: string; session: Session }
+	export let slug: string
+	export let session: Session
+	export let supabase: SupabaseClient
 	let windowWidth: number
 	let windowHeight: number
 	let left: number
@@ -33,9 +35,6 @@
 
 	let clientX: number
 	let clientY: number
-
-	let dx: number
-	let dy: number
 
 	const onMouseDown = (e: MouseEvent) => {
 		moving = true
@@ -106,7 +105,7 @@
 
 		// TOFIX: offset shifts slightly when zooming
 		if ($tokenTool) {
-			createBrdElem('token', data.slug, data.session.user.id, e.offsetX, e.offsetY)
+			createBrdElem(supabase, 'token', slug, session.user.id, e.offsetX, e.offsetY)
 			return
 		}
 	}
