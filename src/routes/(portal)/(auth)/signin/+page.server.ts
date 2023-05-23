@@ -1,10 +1,9 @@
-import { fail, redirect } from '@sveltejs/kit'
+import { fail, redirect, type Actions } from '@sveltejs/kit'
 import { AuthUserSchema } from '$lib/validationSchema'
 import { ForgotPasswordSchema } from '$lib/validationSchema'
-import type { Actions } from './$types'
 import { ZodError } from 'zod'
 
-export const actions = {
+export const actions: Actions = {
 	signIn: async ({ request, locals: { supabase } }) => {
 		const formData = Object.fromEntries(await request.formData())
 		const { email, password } = formData as { email: string; password: string }
@@ -97,4 +96,4 @@ export const actions = {
 			})
 		}
 	}
-} satisfies Actions
+}

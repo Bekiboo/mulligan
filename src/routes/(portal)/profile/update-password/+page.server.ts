@@ -1,17 +1,16 @@
 import { UpdatePasswordSchema } from '$lib/validationSchema'
-import { getSupabase } from '@supabase/auth-helpers-sveltekit'
-import { fail, redirect } from '@sveltejs/kit'
+import { fail, redirect, type Actions } from '@sveltejs/kit'
 import { ZodError } from 'zod'
+import type { LayoutServerLoad } from '../$types.js'
 
-export const load = async (event) => {
-	const { session } = await getSupabase(event)
-	return { session }
+export const load: LayoutServerLoad = async ({ locals: { getSession } }) => {
+	return {
+		session: await getSession()
+	}
 }
 
-export const actions = {
-	default: async (event) => {
-		const { request } = event
-		const { supabaseClient } = await getSupabase(event)
+export const actions: Actions = {
+	default: async ({ request, locals: { supabase } }) => {
 		const formData = Object.fromEntries(await request.formData())
 		const { password, confirmPassword } = formData as {
 			password: string
@@ -42,7 +41,7 @@ export const actions = {
 		}
 
 		try {
-			const { error } = await supabaseClient.auth.updateUser({ password })
+			const { error } = await supabase.auth.updateUser({ password })
 			if (error) throw error
 		} catch (error) {
 			console.error('erreur!!! : ' + error)

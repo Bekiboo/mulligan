@@ -48,9 +48,6 @@
 	}
 
 	const onMouseUp = (e: MouseEvent | TouchEvent) => {
-		console.log(brdElem)
-		console.log($selectedBrdElems)
-
 		// multiple selection with ctrl key
 		if (e.ctrlKey) {
 			if (selected) {

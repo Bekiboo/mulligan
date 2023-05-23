@@ -1,6 +1,5 @@
-import { fail } from '@sveltejs/kit'
+import { fail, type Actions } from '@sveltejs/kit'
 import { CreateGameSchema } from '$lib/validationSchema'
-import type { Actions } from './$types'
 import { genRandomString } from '$lib/utils'
 import { ZodError } from 'zod'
 
