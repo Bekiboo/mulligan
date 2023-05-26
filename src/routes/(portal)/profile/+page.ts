@@ -9,7 +9,7 @@ export const load: PageLoad = async ({ parent }) => {
 		console.log('Error loading Games: ' + error)
 	}
 	return {
-		user: session?.user || null,
+		user: session?.user || null, //TODO: null needed?
 		games: data
 	}
 }

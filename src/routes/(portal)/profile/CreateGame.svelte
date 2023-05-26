@@ -73,19 +73,6 @@
 				<div class="text-yellow-300 font-bold">{errors.name}</div>
 			{/if}
 
-			<!-- <label for="email" class="block mb-2 text-sm font-medium">Mode</label>
-			<input
-				type="email"
-				name="email"
-				id="email-for-reset-password"
-				class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-				placeholder="name@company.com"
-				required
-			/>
-			{#if errors?.email}
-				<div class="text-yellow-300 font-bold">{errors?.email[0]}</div>
-			{/if} -->
-
 			<button
 				class="bg-emerald-600 cursor-pointer mt-4 text-white w-fit mx-auto rounded-xl drop-shadow-md active:drop-shadow-none duration-100 py-2 px-4 hover:bg-emerald-500"
 			>

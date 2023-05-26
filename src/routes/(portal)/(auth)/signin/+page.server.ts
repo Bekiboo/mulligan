@@ -2,6 +2,7 @@ import { fail, redirect, type Actions } from '@sveltejs/kit'
 import { AuthUserSchema } from '$lib/validationSchema'
 import { ForgotPasswordSchema } from '$lib/validationSchema'
 import { ZodError } from 'zod'
+import type { AuthError, AuthResponse } from '@supabase/supabase-js'
 
 export const actions: Actions = {
 	signIn: async ({ request, locals: { supabase } }) => {
@@ -23,7 +24,7 @@ export const actions: Actions = {
 			}
 		}
 
-		const { error }: any = await supabase.auth.signInWithPassword({
+		const { error }: AuthResponse = await supabase.auth.signInWithPassword({
 			email,
 			password
 		})
@@ -72,9 +73,10 @@ export const actions: Actions = {
 			}
 		}
 
-		const { error }: { error: any } = await supabase.auth.resetPasswordForEmail(email, {
-			redirectTo: `${url.origin}/account/update-password`
-		})
+		const { error }: { data: object; error: null } | { data: null; error: AuthError } =
+			await supabase.auth.resetPasswordForEmail(email, {
+				redirectTo: `${url.origin}/account/update-password`
+			})
 
 		if (error) {
 			if (error && error.status === 400) {
