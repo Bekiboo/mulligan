@@ -46,6 +46,8 @@
 
 							break
 						case 'DELETE':
+							console.log('delete', payload)
+
 							set([...get(brdElems).filter((brdElem: BrdElem) => brdElem.id !== payload.old.id)])
 							break
 						default:
@@ -58,7 +60,9 @@
 	})
 
 	brdElems.subscribe((brdElems) => {
-		brdElemList?.set(brdElems)
+		console.log('brdElems', brdElems)
+
+		brdElemList.set(brdElems)
 	})
 
 	onMount(() => {

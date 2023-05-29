@@ -4,10 +4,16 @@
 	export let brdElem: BrdElem
 	export let selected: boolean
 
+	let brdElemCompHeight: number
+	let brdElemCompWidth: number
+
 	// check if brdElem is selected
 </script>
 
 <div
+	bind:clientHeight={brdElemCompHeight}
+	bind:clientWidth={brdElemCompWidth}
+	style="transform:translate({-brdElemCompWidth / 2}px,{-brdElemCompHeight / 2}px);"
 	class="bg-red-700 w-32 h-48 rounded-2xl text-white text-center pt-2 font-bold"
 	aria-label="element"
 	class:selected

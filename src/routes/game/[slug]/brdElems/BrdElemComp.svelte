@@ -109,11 +109,21 @@
 	on:mouseup|preventDefault={onMouseUp}
 	on:touchstart|preventDefault={onTouchStart}
 	on:touchend|preventDefault={onMouseUp}
+	style="transform:translate({brdElem.pos.x}px,{brdElem.pos.y}px);z-index:{brdElem.pos.z};"
+	class="absolute ease-in-out cursor-grab"
+	class:moving={brdElem.id == $movingBrdElem}
+>
+	<!-- <div
+	bind:this={HTMLelement}
+	on:mousedown|preventDefault={onMouseDown}
+	on:mouseup|preventDefault={onMouseUp}
+	on:touchstart|preventDefault={onTouchStart}
+	on:touchend|preventDefault={onMouseUp}
 	style="transform:translate({brdElem.pos.x - middleX}px,{brdElem.pos.y -
 		middleY}px);z-index:{brdElem.pos.z};"
 	class="absolute ease-in-out cursor-grab"
 	class:moving={brdElem.id == $movingBrdElem}
->
+> -->
 	{#if brdElem.type == 'token'}
 		<TokenComp {brdElem} {selected} />
 	{:else if brdElem.type == 'card'}
