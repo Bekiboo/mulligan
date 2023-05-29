@@ -15,6 +15,9 @@
 	let middleX: number
 	let middleY: number
 
+	let brdElemCompHeight: number
+	let brdElemCompWidth: number
+
 	$: selected = $selectedBrdElems?.some((el: BrdElem) => el.id == brdElem.id)
 
 	onMount(() => {
@@ -105,25 +108,17 @@
 
 <div
 	bind:this={HTMLelement}
+	bind:clientHeight={brdElemCompHeight}
+	bind:clientWidth={brdElemCompWidth}
 	on:mousedown|preventDefault={onMouseDown}
 	on:mouseup|preventDefault={onMouseUp}
 	on:touchstart|preventDefault={onTouchStart}
 	on:touchend|preventDefault={onMouseUp}
-	style="transform:translate({brdElem.pos.x}px,{brdElem.pos.y}px);z-index:{brdElem.pos.z};"
+	style="transform:translate({brdElem.pos.x - brdElemCompWidth / 2}px,{brdElem.pos.y -
+		brdElemCompHeight / 2}px);z-index:{brdElem.pos.z};"
 	class="absolute ease-in-out cursor-grab"
 	class:moving={brdElem.id == $movingBrdElem}
 >
-	<!-- <div
-	bind:this={HTMLelement}
-	on:mousedown|preventDefault={onMouseDown}
-	on:mouseup|preventDefault={onMouseUp}
-	on:touchstart|preventDefault={onTouchStart}
-	on:touchend|preventDefault={onMouseUp}
-	style="transform:translate({brdElem.pos.x - middleX}px,{brdElem.pos.y -
-		middleY}px);z-index:{brdElem.pos.z};"
-	class="absolute ease-in-out cursor-grab"
-	class:moving={brdElem.id == $movingBrdElem}
-> -->
 	{#if brdElem.type == 'token'}
 		<TokenComp {brdElem} {selected} />
 	{:else if brdElem.type == 'card'}
