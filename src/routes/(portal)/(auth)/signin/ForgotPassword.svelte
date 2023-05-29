@@ -3,7 +3,7 @@
 	import Modal from '$lib/components/overlay/Modal.svelte'
 	import { loadingState } from '$lib/stores/states'
 	import { enhance, applyAction } from '$app/forms'
-	import Cross from '$lib/components/svg/Cross.svelte'
+	import CrossSvg from '$lib/components/svg/CrossSvg.svelte'
 	import type { FormError } from '$lib/types'
 	import type { SubmitFunction } from '$app/forms'
 
@@ -56,7 +56,7 @@
 				class="cursor-pointer scale-125 hover:scale-150 transition duration-100"
 				on:click={close}
 			>
-				<Cross />
+				<CrossSvg />
 			</div>
 		</div>
 		<p>Don't fret! Just type in your email and we will send you a link to reset your password!</p>

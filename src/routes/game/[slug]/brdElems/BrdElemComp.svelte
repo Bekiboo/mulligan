@@ -7,6 +7,7 @@
 	import { clickStartPos, dragging, hoveringTrash, movingBrdElem, zoom } from '$lib/stores/states'
 	import TokenComp from './TokenComp.svelte'
 	import type { SupabaseClient } from '@supabase/supabase-js'
+	import CardComp from './CardComp.svelte'
 
 	export let brdElem: BrdElem
 	export let supabase: SupabaseClient
@@ -115,6 +116,8 @@
 >
 	{#if brdElem.type == 'token'}
 		<TokenComp {brdElem} {selected} />
+	{:else if brdElem.type == 'card'}
+		<CardComp {brdElem} {selected} />
 	{/if}
 </div>
 

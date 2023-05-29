@@ -2,7 +2,7 @@
 	import { createBrdElem } from '$lib/db/brdElemService'
 	import { selectedBrdElems } from '$lib/stores/brdElem'
 	import { dragging, zoom } from '$lib/stores/states'
-	import { tokenTool } from '$lib/stores/toolbar'
+	import { tokenTool, cardTool } from '$lib/stores/toolbar'
 	import { onMount } from 'svelte'
 	import ZoomIndicator from './ui/ZoomIndicator.svelte'
 	import type { Session, SupabaseClient } from '@supabase/supabase-js'
@@ -105,7 +105,25 @@
 
 		// TOFIX: offset shifts slightly when zooming
 		if ($tokenTool) {
-			createBrdElem(supabase, 'token', slug, session.user.id, e.offsetX, e.offsetY)
+			createBrdElem(
+				supabase,
+				'token',
+				slug,
+				session?.user.id ?? '00000000-0000-0000-0000-000000000000', // for unregistered users in demo game
+				e.offsetX,
+				e.offsetY
+			)
+			return
+		}
+		if ($cardTool) {
+			createBrdElem(
+				supabase,
+				'card',
+				slug,
+				session?.user.id ?? '00000000-0000-0000-0000-000000000000', // for unregistered users in demo game
+				e.offsetX,
+				e.offsetY
+			)
 			return
 		}
 	}

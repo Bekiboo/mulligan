@@ -10,7 +10,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		options: {
 			realtime: {
 				params: {
-					eventsPerSecond: 100
+					eventsPerSecond: 10
 				}
 			}
 		}

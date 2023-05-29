@@ -44,10 +44,10 @@ export async function createBrdElem(
 			break
 	}
 
-	if (owner === '') {
-		console.log('No user logged in')
-		return
-	}
+	// if (owner === '') {
+	// 	console.log('No user logged in')
+	// 	return
+	// }
 	const { error } = await supabase.from('element').insert({
 		game_slug: gameSlug,
 		type,

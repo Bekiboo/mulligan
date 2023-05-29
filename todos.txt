@@ -1,1 +1,5 @@
 Add Prisma to the project
+
+---------------------- BOARD ----------------------
+Add area selection
+Add copy paste for elements
