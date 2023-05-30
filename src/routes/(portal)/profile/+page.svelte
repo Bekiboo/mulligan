@@ -13,6 +13,12 @@
 		goto('/')
 		return error
 	}
+
+	const updateName = async (id: number) => {
+		const { error } = await data.supabase.from('game').update({ name: 'test' }).eq('id', id)
+
+		return error
+	}
 </script>
 
 <div class="w-full bg-[#3F589E] rounded-2xl shadow sm:max-w-md xl:p-0 mb-4">
@@ -34,13 +40,16 @@
 			<div class="text-center">Loading...</div>
 		{:else}
 			{#each games as game}
-				<a
-					href="/game/{game.slug}"
-					class="border border-white flex rounded-2xl justify-between py-2 px-4 hover:bg-emerald-500 transition duration-100"
-				>
-					<p class="font-bold">{game.name}</p>
-					<p>{game.mode}</p>
-				</a>
+				<div class="flex">
+					<a
+						href="/game/{game.slug}"
+						class="border border-white flex rounded-2xl justify-between py-2 px-4 hover:bg-emerald-500 transition duration-100"
+					>
+						<p class="font-bold">{game.name}</p>
+						<p>{game.mode}</p>
+					</a>
+					<button on:click={() => updateName(game.id)}>Change name</button>
+				</div>
 			{/each}
 		{/if}
 	</div>

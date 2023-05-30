@@ -46,8 +46,6 @@
 
 							break
 						case 'DELETE':
-							console.log('delete', payload)
-
 							set([...get(brdElems).filter((brdElem: BrdElem) => brdElem.id !== payload.old.id)])
 							break
 						default:
@@ -60,9 +58,7 @@
 	})
 
 	brdElems.subscribe((brdElems) => {
-		console.log('brdElems', brdElems)
-
-		brdElemList.set(brdElems)
+		$brdElemList = brdElems
 	})
 
 	onMount(() => {
@@ -71,7 +67,7 @@
 		return () => document.documentElement.style.removeProperty('overscroll-behaviour')
 	})
 
-	const boardDims: { width: number; height: number } = { width: 30000, height: 20000 }
+	const boardDims: { width: number; height: number } = { width: 3000, height: 2000 }
 </script>
 
 <Board boardWidth={boardDims.width} boardHeight={boardDims.height} {supabase} {slug} {session}>
