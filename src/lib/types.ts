@@ -34,10 +34,10 @@ export type Position = {
 	z: number
 }
 
-export type BoardStateMessage = {
-	type: 'boardState'
-	brdElems: BrdElem[]
-}
+// export type BoardStateMessage = {
+// 	type: 'boardState'
+// 	brdElems: BrdElem[]
+// }
 
 export type User = {
 	id: string
