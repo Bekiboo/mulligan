@@ -1,12 +1,3 @@
-// function to get the middle of height and width of an element
-export function getCenter(element: HTMLElement): { middleX: number; middleY: number } {
-	const { height, width } = element.getBoundingClientRect()
-	return {
-		middleX: width / 2,
-		middleY: height / 2
-	}
-}
-
 export function genRandomString(length: number): string {
 	const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 	const charLength = chars.length

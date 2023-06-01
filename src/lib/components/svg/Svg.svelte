@@ -32,6 +32,6 @@
 		fill: black;
 		stroke-width: 1;
 		font-size: 0.6rem;
-		text-shadow: 0 0 10px white;
+		text-shadow: 0 0 6px white;
 	}
 </style>

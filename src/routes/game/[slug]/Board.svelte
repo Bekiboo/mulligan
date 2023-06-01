@@ -16,7 +16,6 @@
 	let windowHeight: number
 	let left: number
 	let top: number
-	let board: HTMLElement
 
 	onMount(() => {
 		windowWidth = window.innerWidth
@@ -137,7 +136,6 @@
 	on:touchstart={onTouchStart}
 	on:wheel|preventDefault={wheel}
 	on:click={handleBoardClick}
-	bind:this={board}
 	style="left: {left}px; top: {top}px; transform: scale({$zoom});"
 	class="select-none cursor-move fixed z-[-1] bg-slate-800"
 >
