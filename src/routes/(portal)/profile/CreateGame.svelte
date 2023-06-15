@@ -6,6 +6,8 @@
 	import CrossSvg from '$lib/components/svg/CrossSvg.svelte'
 	import type { SubmitFunction } from '$app/forms'
 
+	export let games
+
 	let showModal = false
 	const close = () => (showModal = false)
 
@@ -25,13 +27,19 @@
 				})
 				return await applyAction(result)
 			}
-			errors = {}
-			toast.success('Game successfully created', {
-				duration: 5000,
-				style: 'margin-top: 4rem'
-			})
-			close()
-			update()
+
+			if (result.type === 'success') {
+				games = result.data?.games ?? []
+
+				errors = {}
+				toast.success('Game successfully created', {
+					duration: 5000,
+					style: 'margin-top: 4rem'
+				})
+
+				close()
+				update()
+			}
 		}
 	}
 </script>

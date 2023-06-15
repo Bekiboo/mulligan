@@ -10,6 +10,8 @@ export const load: PageLoad = async ({ parent }) => {
 	}
 	return {
 		user: session?.user || null, //TODO: null needed?
-		games: data
+		games: data,
+		session,
+		supabase
 	}
 }
