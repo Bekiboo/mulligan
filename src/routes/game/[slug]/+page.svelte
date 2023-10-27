@@ -36,11 +36,11 @@
 							break
 						case 'UPDATE':
 							// set movingbrdElem for animation
-							movingBrdElem.set(payload.new.id)
-							setTimeout(() => movingBrdElem.set(null), 500)
+							// movingBrdElem.set(payload.new.id)
+							// setTimeout(() => movingBrdElem.set(null), 500)
 							set([
-								...get(brdElems).map((brdElem: BrdElem) =>
-									brdElem.id === payload.new.id ? (payload.new as BrdElem) : brdElem
+								...get(brdElems).map((brdElem) =>
+									brdElem.id === payload.new.id ? (payload.new as BrdElem) : (brdElem as BrdElem)
 								)
 							])
 

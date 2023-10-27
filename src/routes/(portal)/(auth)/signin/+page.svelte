@@ -57,8 +57,8 @@
 					placeholder="name@company.com"
 					required
 				/>
-				{#if errors.email}
-					<div class="text-red-400">{errors.email[0]}</div>
+				{#if errors?.email}
+					<div class="text-red-400">{errors.email}</div>
 				{/if}
 			</div>
 			<div>
@@ -71,8 +71,8 @@
 					class="text-gray-800 bg-gray-50 border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
 					required
 				/>
-				{#if errors.password}
-					<div class="text-red-400">{errors.password[0]}</div>
+				{#if errors?.password}
+					<div class="text-red-400">{errors.password}</div>
 				{/if}
 			</div>
 			<div class="flex items-end justify-between">
