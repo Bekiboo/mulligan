@@ -7,4 +7,5 @@
 </div>
 
 <!-- link to try a demo game -->
-	<a href="/game/demo" class="text-white text-center text-xl">Try a demo game</a>
+<a href="/game/demo" class="text-white text-center text-xl">Try a demo game</a>
+Test
