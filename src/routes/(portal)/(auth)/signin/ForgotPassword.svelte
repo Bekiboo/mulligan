@@ -5,7 +5,7 @@
 	import { enhance, applyAction } from '$app/forms'
 	import CrossSvg from '$lib/components/svg/CrossSvg.svelte'
 	import type { FormError } from '$lib/types'
-	import type { SubmitFunction } from '$app/forms'
+	import type { SubmitFunction } from '@sveltejs/kit'
 
 	let showModal = false
 	const close = () => (showModal = false)
@@ -38,12 +38,12 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div
+<button
 	on:click={() => (showModal = true)}
 	class="text-sm font-medium text-primary-600 hover:underline cursor-pointer"
 >
 	Forgot password?
-</div>
+</button>
 
 {#if showModal}
 	<Modal on:close={close}>
@@ -52,12 +52,12 @@
 				Forgot your password?
 			</h2>
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<div
+			<button
 				class="cursor-pointer scale-125 hover:scale-150 transition duration-100"
 				on:click={close}
 			>
 				<CrossSvg />
-			</div>
+			</button>
 		</div>
 		<p>Don't fret! Just type in your email and we will send you a link to reset your password!</p>
 
